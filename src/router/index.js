@@ -1,390 +1,236 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Layout from '@/layout'
 
 Vue.use(Router)
 
-/* Layout */
-import Layout from '@/layout'
-
-/* Router Modules */
-import componentsRouter from './modules/components'
-import chartsRouter from './modules/charts'
-import tableRouter from './modules/table'
-import nestedRouter from './modules/nested'
-
-/**
- * Note: sub-menu only appear when route children.length >= 1
- * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
- *
- * hidden: true                   if set true, item will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu
- *                                if not set alwaysShow, when item has more than one children route,
- *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
- * name:'router-name'             the name is used by <keep-alive> (must set!!!)
- * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
-    noCache: true                if set true, the page will no be cached(default is false)
-    affix: true                  if set true, the tag will affix in the tags-view
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
-  }
- */
-
-/**
- * constantRoutes
- * a base page that does not have permission requirements
- * all roles can be accessed
- */
 export const constantRoutes = [
-  {
-    path: '/redirect',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/index')
-      }
-    ]
-  },
   {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
   },
   {
-    path: '/auth-redirect',
-    component: () => import('@/views/login/auth-redirect'),
-    hidden: true
-  },
-  {
-    path: '/404',
-    component: () => import('@/views/error-page/404'),
-    hidden: true
-  },
-  {
-    path: '/401',
-    component: () => import('@/views/error-page/401'),
-    hidden: true
-  },
-  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/documentation',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: 'Documentation', icon: 'documentation', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/guide',
-    component: Layout,
-    redirect: '/guide/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
-        meta: { title: 'Guide', icon: 'guide', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/profile',
-    component: Layout,
-    redirect: '/profile/index',
-    hidden: true,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: { title: 'Profile', icon: 'user', noCache: true }
-      }
-    ]
+    children: [{
+      path: 'dashboard',
+      component: () => import('@/views/dashboard/index'),
+      name: 'Dashboard',
+      meta: { title: '首页', icon: 'dashboard' }
+    }]
   }
 ]
 
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
 export const asyncRoutes = [
   {
-    path: '/permission',
+    path: '/basic-info',
     component: Layout,
-    redirect: '/permission/page',
-    alwaysShow: true, // will always show the root menu
-    name: 'Permission',
-    meta: {
-      title: 'Permission',
-      icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
-    },
+    meta: { title: '基础信息管理', icon: 'el-icon-user' },
     children: [
       {
-        path: 'page',
-        component: () => import('@/views/permission/page'),
-        name: 'PagePermission',
-        meta: {
-          title: 'Page Permission',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
+        path: 'teacher-info',
+        component: () => import('@/views/basic-info/teacher-info/index'),
+        name: 'TeacherInfo',
+        meta: { title: '教师一张表' }
       },
       {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        name: 'DirectivePermission',
-        meta: {
-          title: 'Directive Permission'
-          // if do not set roles, means: this page does not require permission
-        }
-      },
-      {
-        path: 'role',
-        component: () => import('@/views/permission/role'),
-        name: 'RolePermission',
-        meta: {
-          title: 'Role Permission',
-          roles: ['admin']
-        }
-      }
-    ]
-  },
-
-  {
-    path: '/icon',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/icons/index'),
-        name: 'Icons',
-        meta: { title: 'Icons', icon: 'icon', noCache: true }
-      }
-    ]
-  },
-
-  /** when your routing map is too long, you can split it into small modules **/
-  componentsRouter,
-  chartsRouter,
-  nestedRouter,
-  tableRouter,
-
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/list',
-    name: 'Example',
-    meta: {
-      title: 'Example',
-      icon: 'el-icon-s-help'
-    },
-    children: [
-      {
-        path: 'create',
-        component: () => import('@/views/example/create'),
-        name: 'CreateArticle',
-        meta: { title: 'Create Article', icon: 'edit' }
-      },
-      {
-        path: 'edit/:id(\\d+)',
-        component: () => import('@/views/example/edit'),
-        name: 'EditArticle',
-        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
+        path: 'teacher-info/detail/:id',
+        component: () => import('@/views/basic-info/teacher-info/detail'),
+        name: 'TeacherDetail',
+        meta: { title: '教师详情', activeMenu: '/basic-info/teacher-info' },
         hidden: true
       },
       {
-        path: 'list',
-        component: () => import('@/views/example/list'),
-        name: 'ArticleList',
-        meta: { title: 'Article List', icon: 'list' }
+        path: 'student-info',
+        component: () => import('@/views/basic-info/student-info/index'),
+        name: 'StudentInfo',
+        meta: { title: '学生一张表' }
       }
     ]
   },
-
   {
-    path: '/tab',
+    path: '/student-affairs',
     component: Layout,
+    meta: { title: '学工管理', icon: 'el-icon-s-custom' },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/tab/index'),
-        name: 'Tab',
-        meta: { title: 'Tab', icon: 'tab' }
-      }
-    ]
-  },
-
-  {
-    path: '/error',
-    component: Layout,
-    redirect: 'noRedirect',
-    name: 'ErrorPages',
-    meta: {
-      title: 'Error Pages',
-      icon: '404'
-    },
-    children: [
-      {
-        path: '401',
-        component: () => import('@/views/error-page/401'),
-        name: 'Page401',
-        meta: { title: '401', noCache: true }
+        path: 'activities',
+        component: () => import('@/views/student-affairs/activities/index'),
+        name: 'StudentActivities',
+        meta: { title: '活动管理' }
       },
       {
-        path: '404',
-        component: () => import('@/views/error-page/404'),
-        name: 'Page404',
-        meta: { title: '404', noCache: true }
-      }
-    ]
-  },
-
-  {
-    path: '/error-log',
-    component: Layout,
-    children: [
-      {
-        path: 'log',
-        component: () => import('@/views/error-log/index'),
-        name: 'ErrorLog',
-        meta: { title: 'Error Log', icon: 'bug' }
-      }
-    ]
-  },
-
-  {
-    path: '/excel',
-    component: Layout,
-    redirect: '/excel/export-excel',
-    name: 'Excel',
-    meta: {
-      title: 'Excel',
-      icon: 'excel'
-    },
-    children: [
-      {
-        path: 'export-excel',
-        component: () => import('@/views/excel/export-excel'),
-        name: 'ExportExcel',
-        meta: { title: 'Export Excel' }
+        path: 'associations',
+        component: () => import('@/views/student-affairs/associations/index'),
+        name: 'StudentAssociations',
+        meta: { title: '社团管理' }
       },
       {
-        path: 'export-selected-excel',
-        component: () => import('@/views/excel/select-excel'),
-        name: 'SelectExcel',
-        meta: { title: 'Export Selected' }
+        path: 'evaluation',
+        component: () => import('@/views/student-affairs/evaluation/index'),
+        name: 'StudentEvaluation',
+        meta: { title: '综合测评' }
       },
       {
-        path: 'export-merge-header',
-        component: () => import('@/views/excel/merge-header'),
-        name: 'MergeHeader',
-        meta: { title: 'Merge Header' }
+        path: 'leave',
+        component: () => import('@/views/student-affairs/leave/index'),
+        name: 'StudentLeave',
+        meta: { title: '请销假管理' }
+      }
+    ]
+  },
+  {
+    path: '/personnel',
+    component: Layout,
+    meta: { title: '人事管理', icon: 'el-icon-s-check' },
+    children: [
+      {
+        path: 'assessment',
+        component: () => import('@/views/personnel/assessment/index'),
+        name: 'TeacherAssessment',
+        meta: { title: '教职工考核管理' }
       },
       {
-        path: 'upload-excel',
-        component: () => import('@/views/excel/upload-excel'),
-        name: 'UploadExcel',
-        meta: { title: 'Upload Excel' }
+        path: 'performance',
+        component: () => import('@/views/personnel/performance/index'),
+        name: 'PerformanceAnalysis',
+        meta: { title: '绩效分析' }
       }
     ]
   },
-
   {
-    path: '/zip',
+    path: '/party-building',
     component: Layout,
-    redirect: '/zip/download',
-    alwaysShow: true,
-    name: 'Zip',
-    meta: { title: 'Zip', icon: 'zip' },
+    meta: { title: '党建思政', icon: 'el-icon-s-flag' },
     children: [
       {
-        path: 'download',
-        component: () => import('@/views/zip/index'),
-        name: 'ExportZip',
-        meta: { title: 'Export Zip' }
+        path: 'organization',
+        component: () => import('@/views/party-building/organization/index'),
+        name: 'PartyOrganization',
+        meta: { title: '党组织管理' }
+      },
+      {
+        path: 'member-development',
+        component: () => import('@/views/party-building/member-development/index'),
+        name: 'MemberDevelopment',
+        meta: { title: '党员发展' }
+      },
+      {
+        path: 'activities',
+        component: () => import('@/views/party-building/activities/index'),
+        name: 'PartyActivities',
+        meta: { title: '党员学习与活动' }
+      },
+      {
+        path: 'ideology',
+        component: () => import('@/views/party-building/ideology/index'),
+        name: 'Ideology',
+        meta: { title: '思政工作' }
       }
     ]
   },
-
   {
-    path: '/pdf',
+    path: '/research',
     component: Layout,
-    redirect: '/pdf/index',
+    meta: { title: '科研管理', icon: 'el-icon-s-management' },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/pdf/index'),
-        name: 'PDF',
-        meta: { title: 'PDF', icon: 'pdf' }
+        path: 'projects',
+        component: () => import('@/views/research/projects/index'),
+        name: 'ResearchProjects',
+        meta: { title: '科研项目管理' }
+      },
+      {
+        path: 'achievements',
+        component: () => import('@/views/research/achievements/index'),
+        name: 'ResearchAchievements',
+        meta: { title: '科研成果管理' }
+      },
+      {
+        path: 'activities',
+        component: () => import('@/views/research/activities/index'),
+        name: 'AcademicActivities',
+        meta: { title: '学术活动管理' }
       }
     ]
   },
   {
-    path: '/pdf/download',
-    component: () => import('@/views/pdf/download'),
-    hidden: true
-  },
-
-  {
-    path: '/theme',
+    path: '/cooperation',
     component: Layout,
+    meta: { title: '校企合作', icon: 'el-icon-s-cooperation' },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/theme/index'),
-        name: 'Theme',
-        meta: { title: 'Theme', icon: 'theme' }
+        path: 'projects',
+        component: () => import('@/views/cooperation/projects/index'),
+        name: 'CooperationProjects',
+        meta: { title: '合作项目管理' }
+      },
+      {
+        path: 'enterprises',
+        component: () => import('@/views/cooperation/enterprises/index'),
+        name: 'EnterpriseInfo',
+        meta: { title: '企业信息库' }
+      },
+      {
+        path: 'courses',
+        component: () => import('@/views/cooperation/courses/index'),
+        name: 'CooperationCourses',
+        meta: { title: '合作课程开发' }
       }
     ]
   },
-
   {
-    path: '/clipboard',
+    path: '/assets',
     component: Layout,
+    meta: { title: '后勤资产管理', icon: 'el-icon-s-goods' },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/clipboard/index'),
-        name: 'ClipboardDemo',
-        meta: { title: 'Clipboard', icon: 'clipboard' }
+        path: 'register',
+        component: () => import('@/views/assets/register/index'),
+        name: 'AssetsRegister',
+        meta: { title: '资产登记' }
+      },
+      {
+        path: 'maintenance',
+        component: () => import('@/views/assets/maintenance/index'),
+        name: 'AssetsMaintenance',
+        meta: { title: '资产维护' }
+      },
+      {
+        path: 'scrap',
+        component: () => import('@/views/assets/scrap/index'),
+        name: 'AssetsScrap',
+        meta: { title: '资产报废' }
       }
     ]
   },
-
   {
-    path: 'external-link',
+    path: '/union',
     component: Layout,
+    meta: { title: '工会', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'https://github.com/PanJiaChen/vue-element-admin',
-        meta: { title: 'External Link', icon: 'link' }
+        path: 'members',
+        component: () => import('@/views/union/members/index'),
+        name: 'UnionMembers',
+        meta: { title: '会员管理' }
+      },
+      {
+        path: 'activities',
+        component: () => import('@/views/union/activities/index'),
+        name: 'UnionActivities',
+        meta: { title: '活动组织' }
+      },
+      {
+        path: 'welfare',
+        component: () => import('@/views/union/welfare/index'),
+        name: 'UnionWelfare',
+        meta: { title: '福利管理' }
       }
     ]
-  },
-
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
 
 const createRouter = () => new Router({
