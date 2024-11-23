@@ -1,9 +1,125 @@
 const Mock = require('mockjs')
 
+// 使用 Multiavatar API 生成头像
+const getAvatarUrl = (name) => {
+  // 使用姓名的 MD5 值作为种子，确保同一个姓名生成相同的头像
+  const seed = name.split('').reduce((acc, char) => {
+    return acc + char.charCodeAt(0)
+  }, 0)
+  return `https://api.multiavatar.com/${seed}.svg`
+}
+
+// 定义班级列表
+const classList = [
+  '计算机2101班',
+  '计算机2102班',
+  '计算机2103班',
+  '计算机2201班',
+  '计算机2202班',
+  '计算机2203班',
+  '计算机2301班',
+  '计算机2302班',
+  '计算机2303班'
+]
+
+// 定义职称晋升历程
+const generateCareerPath = (hireDate, position) => {
+  const careerPath = []
+  const positions = ['助教', '讲师', '副教授', '教授']
+  const currentIndex = positions.indexOf(position)
+  
+  let currentDate = new Date(hireDate)
+  
+  // 入职记录
+  careerPath.push({
+    title: '入职',
+    content: '加入学校，任助教职务',
+    date: hireDate,
+    type: 'success'
+  })
+
+  // 职称晋升记录
+  for (let i = 1; i <= currentIndex; i++) {
+    currentDate = new Date(currentDate.setFullYear(currentDate.getFullYear() + Mock.Random.integer(3, 5)))
+    careerPath.push({
+      title: '职称晋升',
+      content: `晋升为${positions[i]}`,
+      date: Mock.Random.date('yyyy-MM-dd', currentDate.toISOString().split('T')[0]),
+      type: 'warning'
+    })
+  }
+
+  // 添加行政职务记录
+  if (Mock.Random.boolean()) {
+    careerPath.push({
+      title: '行政任命',
+      content: Mock.Random.pick(['担任教研室主任', '担任系主任', '担任教务处长']),
+      date: Mock.Random.date('yyyy-MM-dd', currentDate.toISOString().split('T')[0]),
+      type: 'info'
+    })
+  }
+
+  return careerPath.sort((a, b) => new Date(a.date) - new Date(b.date))
+}
+
+// 生成教学课程历史
+const generateTeachingHistory = () => {
+  const history = []
+  const semesters = ['2022-2023-1', '2022-2023-2', '2023-2024-1', '2023-2024-2']
+  
+  semesters.forEach(semester => {
+    const courseCount = Mock.Random.integer(1, 3)
+    const courses = []
+    for (let i = 0; i < courseCount; i++) {
+      courses.push({
+        name: Mock.Random.pick(['Java程序设计', '数据结构', '计算机网络', '操作系统', '软件工程', '数据库原理']),
+        credit: Mock.Random.float(2, 4, 1, 1),
+        hours: Mock.Random.integer(32, 64),
+        studentCount: Mock.Random.integer(30, 120),
+        evaluationScore: Mock.Random.float(80, 100, 1, 1)
+      })
+    }
+    history.push({
+      semester,
+      courses
+    })
+  })
+  
+  return history
+}
+
+// 生成教师证书
+const generateCertificates = () => {
+  const certificates = []
+  const count = Mock.Random.integer(2, 5)
+  
+  for (let i = 0; i < count; i++) {
+    certificates.push({
+      name: Mock.Random.pick([
+        '高等学校教师资格证',
+        '教学能力认证证书',
+        '普通话等级证书',
+        '计算机等级证书',
+        '教学成果奖证书',
+        '优秀教师证书'
+      ]),
+      number: Mock.Random.string('upper', 4) + Mock.Random.string('number', 8),
+      issueDate: Mock.Random.date(),
+      issuer: Mock.Random.pick(['教育部', '省教育厅', '市教育局', '学校']),
+      validUntil: Mock.Random.date()
+    })
+  }
+  
+  return certificates
+}
+
 const teacherList = []
 const count = 100
 
 for (let i = 0; i < count; i++) {
+  const hireDate = Mock.Random.date()
+  const position = Mock.Random.pick(['教授', '副教授', '讲师', '助教'])
+  
   teacherList.push(Mock.mock({
     // 1. 基本信息
     id: '@increment',
@@ -17,57 +133,153 @@ for (let i = 0; i < count; i++) {
     phoneNumber: /^1[3-9]\d{9}$/,
     email: '@email',
     address: '@county(true)',
-    photo: '@image("200x200")',
+    photo() {
+      return getAvatarUrl(this.name)
+    },
 
     // 2. 教职信息
     employeeNumber: /^T\d{6}$/,
     department: '@pick([["教学部门", "计算机系"], ["教学部门", "机械系"], ["行政部门", "教务处"], ["行政部门", "学生处"]])',
-    position: '@pick(["教授", "副教授", "讲师", "助教"])',
+    position,
     employmentType: '@pick(["正式", "兼职", "临时"])',
-    hireDate: '@date',
+    hireDate,
     contractEndDate: '@date',
     employmentStatus: '@pick(["在职", "离职", "退休"])',
     salaryGrade: '@pick(["一级", "二级", "三级", "四级"])',
     workload: '@integer(10, 20)',
     teachingSubject: '@pick(["Java程序设计", "数据结构", "计算机网络", "操作系统"])',
+    
+    // 教职经历
+    careerPath() {
+      return generateCareerPath(hireDate, position)
+    },
+    
+    // 教学历史
+    teachingHistory() {
+      return generateTeachingHistory()
+    },
+    
+    // 证书信息
+    certificates() {
+      return generateCertificates()
+    },
+    
+    // 教学荣誉
+    honors() {
+      const honors = []
+      const count = Mock.Random.integer(0, 5)
+      for (let i = 0; i < count; i++) {
+        honors.push({
+          name: Mock.Random.pick([
+            '优秀教师',
+            '教学名师',
+            '教学成果奖',
+            '教学质量优秀奖',
+            '教书育人奖'
+          ]),
+          level: Mock.Random.pick(['校级', '市级', '省级', '国家级']),
+          year: Mock.Random.integer(2020, 2024),
+          issuer: Mock.Random.pick(['教育部', '省教育厅', '市教育局', '学校'])
+        })
+      }
+      return honors
+    },
 
-    // 3. 教学与科研信息
+    // 3. 教学信息 (保持原有内容，增加更多细节)
     teachingCourses: function() {
       const courses = []
       const count = Mock.Random.integer(1, 4)
       for (let i = 0; i < count; i++) {
         courses.push({
-          name: Mock.Random.pick(['Java程序设计', '数据结构', '计算机网络', '操作系统']),
+          name: Mock.Random.pick(['Java程序设计', '数据结构', '计算机网络', '操作系统', '软件工程', '数据库原理']),
           credit: Mock.Random.float(2, 4, 1, 1),
-          hours: Mock.Random.integer(32, 64)
+          hours: Mock.Random.integer(32, 64),
+          studentCount: Mock.Random.integer(30, 120),
+          classroom: `${Mock.Random.integer(1, 9)}号楼${Mock.Random.integer(101, 505)}`,
+          schedule: `周${Mock.Random.integer(1, 5)} ${Mock.Random.integer(1, 5)}-${Mock.Random.integer(6, 8)}节`,
+          evaluationScore: Mock.Random.float(80, 100, 1, 1)
         })
       }
       return courses
     },
+
+    // 4. 教学与科研信息
     courseCount: '@integer(1, 4)',
     classInfo: function() {
       const classes = []
       const count = Mock.Random.integer(1, 3)
-      for (let i = 0; i < count; i++) {
+      // 从预定义的班级列表中随机选择不重复的班级
+      const selectedClasses = Mock.Random.shuffle(classList).slice(0, count)
+      selectedClasses.forEach(className => {
         classes.push({
-          name: `计算机${Mock.Random.integer(1, 4)}班`,
+          name: className,
           studentCount: Mock.Random.integer(30, 45)
         })
-      }
+      })
       return classes
     },
     evaluationScore: '@float(80, 100, 1, 1)',
-    researchProjectsCount: '@integer(0, 5)',
+    researchProjects: function() {
+      const projects = []
+      const count = Mock.Random.integer(1, 5)
+      for (let i = 0; i < count; i++) {
+        projects.push({
+          name: Mock.Random.ctitle(10, 20),
+          code: /^[A-Z]\d{8}$/,
+          role: Mock.Random.pick(['主持人', '参与者']),
+          type: Mock.Random.pick(['国家级', '省部级', '市厅级', '校级']),
+          status: Mock.Random.pick(['在研', '结题', '验收']),
+          startDate: Mock.Random.date(),
+          endDate: Mock.Random.date(),
+          funding: Mock.Random.float(50000, 1000000, 2, 2)
+        })
+      }
+      return projects
+    },
+    researchProjectsCount: '@integer(1, 5)',
+    papers: function() {
+      const papers = []
+      const count = Mock.Random.integer(0, 10)
+      for (let i = 0; i < count; i++) {
+        papers.push({
+          title: Mock.Random.ctitle(20, 50),
+          journal: Mock.Random.ctitle(5, 10) + '期刊',
+          type: Mock.Random.pick(['SCI', 'EI', 'CSSCI', '核心期刊']),
+          date: Mock.Random.date(),
+          impact: Mock.Random.float(0, 10, 2, 2),
+          authors: Mock.Random.cname() + ',' + Mock.Random.cname() + ',' + Mock.Random.cname()
+        })
+      }
+      return papers
+    },
     publishedPapers: '@integer(0, 10)',
-    patents: '@integer(0, 3)',
-    awards: function() {
-      const awards = []
+    patents: function() {
+      const patents = []
       const count = Mock.Random.integer(0, 3)
       for (let i = 0; i < count; i++) {
+        patents.push({
+          name: Mock.Random.ctitle(10, 30),
+          type: Mock.Random.pick(['发明专利', '实用新型专利', '外观设计专利']),
+          status: Mock.Random.pick(['申请中', '已授权', '已转让']),
+          number: /^[A-Z]\d{8}\.[0-9]$/,
+          date: Mock.Random.date(),
+          inventors: Mock.Random.cname() + ',' + Mock.Random.cname()
+        })
+      }
+      return patents
+    },
+    patentsCount: '@integer(0, 3)',
+    awards: function() {
+      const awards = []
+      const count = Mock.Random.integer(0, 5)
+      for (let i = 0; i < count; i++) {
         awards.push({
-          name: Mock.Random.ctitle(10, 20),
+          name: Mock.Random.ctitle(10, 30),
           level: Mock.Random.pick(['国家级', '省级', '市级']),
-          date: Mock.Random.date()
+          grade: Mock.Random.pick(['特等奖', '一等奖', '二等奖', '三等奖']),
+          date: Mock.Random.date(),
+          issuer: Mock.Random.ctitle(3, 10),
+          members: Mock.Random.cname() + ',' + Mock.Random.cname()
         })
       }
       return awards

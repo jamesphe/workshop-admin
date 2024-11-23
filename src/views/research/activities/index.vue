@@ -23,7 +23,7 @@
         <el-button type="success" icon="el-icon-plus" @click="handleCreate">新建活动</el-button>
       </div>
       <el-table :data="activityList" border style="width: 100%">
-        <el-table-column prop="name" label="活动名称" />
+        <el-table-column prop="name" label="��动名称" />
         <el-table-column prop="type" label="活动类型" />
         <el-table-column prop="speaker" label="主讲人/召集人" />
         <el-table-column prop="date" label="活动日期" />

@@ -12,7 +12,12 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path" />
+        <sidebar-item
+          v-for="route in routes"
+          :key="route.path"
+          :item="route"
+          :base-path="route.path"
+        />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -28,13 +33,12 @@ export default {
   components: { SidebarItem, Logo },
   computed: {
     ...mapGetters([
-      'permission_routes',
-      'sidebar'
+      'sidebar',
+      'routes'
     ]),
     activeMenu() {
       const route = this.$route
       const { meta, path } = route
-      // if set path, the sidebar will highlight the path you set
       if (meta.activeMenu) {
         return meta.activeMenu
       }
@@ -52,3 +56,27 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import "@/styles/variables.scss";
+
+.el-scrollbar {
+  height: 100%;
+}
+
+.scrollbar-wrapper {
+  overflow-x: hidden !important;
+}
+
+.el-menu {
+  border: none;
+  height: 100%;
+  width: 100% !important;
+}
+
+.has-logo {
+  .el-scrollbar {
+    height: calc(100% - 50px);
+  }
+}
+</style>

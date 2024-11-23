@@ -1,191 +1,111 @@
 @import './variables.scss';
-@import './mixin.scss';
-@import './transition.scss';
-@import './element-ui.scss';
-@import './sidebar.scss';
-@import './btn.scss';
 
+// 全局基础样式
 body {
-  height: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
-}
-
-label {
-  font-weight: 700;
-}
-
-html {
-  height: 100%;
-  box-sizing: border-box;
-}
-
-#app {
-  height: 100%;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-
-.no-padding {
-  padding: 0px !important;
-}
-
-.padding-content {
-  padding: 4px 0;
-}
-
-a:focus,
-a:active {
-  outline: none;
-}
-
-a,
-a:focus,
-a:hover {
-  cursor: pointer;
-  color: inherit;
-  text-decoration: none;
-}
-
-div:focus {
-  outline: none;
-}
-
-.fr {
-  float: right;
-}
-
-.fl {
-  float: left;
-}
-
-.pr-5 {
-  padding-right: 5px;
-}
-
-.pl-5 {
-  padding-left: 5px;
-}
-
-.block {
-  display: block;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.inlineBlock {
-  display: block;
-}
-
-.clearfix {
-  &:after {
-    visibility: hidden;
-    display: block;
-    font-size: 0;
-    content: " ";
-    clear: both;
-    height: 0;
-  }
-}
-
-aside {
-  background: #eef1f6;
-  padding: 8px 24px;
-  margin-bottom: 20px;
-  border-radius: 2px;
-  display: block;
-  line-height: 32px;
-  font-size: 16px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  color: #2c3e50;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $primary-text-color;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
 
-  a {
-    color: #337ab7;
-    cursor: pointer;
+// 标题样式
+h1, h2, h3, h4, h5, h6 {
+  font-weight: $font-weight-medium;
+  line-height: $line-height-tight;
+  margin-top: 0;
+  margin-bottom: $spacing-base;
+}
 
-    &:hover {
-      color: rgb(32, 160, 255);
-    }
+h1 { font-size: $font-size-extra-large + 8; }
+h2 { font-size: $font-size-extra-large + 4; }
+h3 { font-size: $font-size-extra-large; }
+h4 { font-size: $font-size-large; }
+h5 { font-size: $font-size-medium; }
+h6 { font-size: $font-size-base; }
+
+// Element UI 组件样式覆盖
+.el-card {
+  border-radius: $border-radius-base;
+  border: 1px solid $border-color-lighter;
+  
+  &__header {
+    padding: $spacing-medium $spacing-large;
+    border-bottom: 1px solid $border-color-lighter;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-medium;
+  }
+  
+  &__body {
+    padding: $spacing-large;
   }
 }
 
-//main-container全局样式
-.app-container {
-  padding: 20px;
-}
-
-.components-container {
-  margin: 30px 50px;
-  position: relative;
-}
-
-.pagination-container {
-  margin-top: 30px;
-}
-
-.text-center {
-  text-align: center
-}
-
-.sub-navbar {
-  height: 50px;
-  line-height: 50px;
-  position: relative;
-  width: 100%;
-  text-align: right;
-  padding-right: 20px;
-  transition: 600ms ease position;
-  background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
-
-  .subtitle {
-    font-size: 20px;
-    color: #fff;
+.el-table {
+  font-size: $font-size-base;
+  
+  th {
+    background-color: #F5F7FA;
+    color: $regular-text-color;
+    font-weight: $font-weight-medium;
+    padding: $spacing-base;
   }
-
-  &.draft {
-    background: #d0d0d0;
-  }
-
-  &.deleted {
-    background: #d0d0d0;
+  
+  td {
+    padding: $spacing-base;
+    color: $primary-text-color;
   }
 }
 
-.link-type,
-.link-type:focus {
-  color: #337ab7;
-  cursor: pointer;
-
-  &:hover {
-    color: rgb(32, 160, 255);
+.el-form {
+  &-item__label {
+    font-size: $font-size-base;
+    color: $regular-text-color;
+  }
+  
+  &-item__content {
+    font-size: $font-size-base;
+    line-height: $line-height-base;
   }
 }
 
-.filter-container {
-  padding-bottom: 10px;
-
-  .filter-item {
-    display: inline-block;
-    vertical-align: middle;
-    margin-bottom: 10px;
+.el-button {
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  padding: $spacing-base $spacing-large;
+  
+  &--text {
+    padding: $spacing-mini $spacing-small;
   }
 }
 
-//refine vue-multiselect plugin
-.multiselect {
-  line-height: 16px;
+.el-tag {
+  font-size: $font-size-small;
+  height: 22px;
+  line-height: 20px;
+  padding: 0 $spacing-small;
+  border-radius: $border-radius-base;
 }
 
-.multiselect--active {
-  z-index: 1000 !important;
-}
+// 通用工具类
+.text-primary { color: $primary-text-color; }
+.text-regular { color: $regular-text-color; }
+.text-secondary { color: $secondary-text-color; }
+.text-placeholder { color: $placeholder-text-color; }
+
+.font-weight-light { font-weight: $font-weight-light; }
+.font-weight-regular { font-weight: $font-weight-regular; }
+.font-weight-medium { font-weight: $font-weight-medium; }
+.font-weight-semibold { font-weight: $font-weight-semibold; }
+.font-weight-bold { font-weight: $font-weight-bold; }
+
+.margin-top { margin-top: $spacing-medium; }
+.margin-right { margin-right: $spacing-medium; }
+.margin-bottom { margin-bottom: $spacing-medium; }
+.margin-left { margin-left: $spacing-medium; }
+
+.padding-top { padding-top: $spacing-medium; }
+.padding-right { padding-right: $spacing-medium; }
+.padding-bottom { padding-bottom: $spacing-medium; }
+.padding-left { padding-left: $spacing-medium; }
