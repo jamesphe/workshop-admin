@@ -1,243 +1,145 @@
-<p align="center">
-  <img width="320" src="https://wpimg.wallstcn.com/ecc53a42-d79b-42e2-8852-5126b810a4c8.svg">
-</p>
+# 职校综合服务平台
 
-<p align="center">
-  <a href="https://github.com/vuejs/vue">
-    <img src="https://img.shields.io/badge/vue-2.6.10-brightgreen.svg" alt="vue">
-  </a>
-  <a href="https://github.com/ElemeFE/element">
-    <img src="https://img.shields.io/badge/element--ui-2.7.0-brightgreen.svg" alt="element-ui">
-  </a>
-  <a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
-    <img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="Build Status">
-  </a>
-  <a href="https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
-  </a>
-  <a href="https://github.com/PanJiaChen/vue-element-admin/releases">
-    <img src="https://img.shields.io/github/release/PanJiaChen/vue-element-admin.svg" alt="GitHub release">
-  </a>
-  <a href="https://gitter.im/vue-element-admin/discuss">
-    <img src="https://badges.gitter.im/Join%20Chat.svg" alt="gitter">
-  </a>
-  <a href="https://panjiachen.github.io/vue-element-admin-site/donate">
-    <img src="https://img.shields.io/badge/%24-donate-ff69b4.svg" alt="donate">
-  </a>
-</p>
-
-English | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md) | [Spanish](./README.es.md)
-
-<!-- <p align="center">
-  <b>SPONSORED BY</b>
-</p>
-<table align="center" cellspacing="0" cellpadding="0">
-  <tbody>
-    <tr>
-      <td align="center" valign="middle">
-       <a href="" title="" target="_blank" style="padding-right: 20px;">
-        <img height="200px" style="padding-right: 20px;" src="" title="variantForm">
-        </a>
-      </td>
-    </tr>
-  </tbody> 
-</table>-->
-
-## Introduction
-
-[vue-element-admin](https://panjiachen.github.io/vue-element-admin) is a production-ready front-end solution for admin interfaces. It is based on [vue](https://github.com/vuejs/vue) and uses the UI Toolkit [element-ui](https://github.com/ElemeFE/element).
-
-[vue-element-admin](https://panjiachen.github.io/vue-element-admin) is based on the newest development stack of vue and it has a built-in i18n solution, typical templates for enterprise applications, and lots of awesome features. It helps you build large and complex Single-Page Applications. I believe whatever your needs are, this project will help you.
-
-- [Preview](https://panjiachen.github.io/vue-element-admin)
-
-- [Documentation](https://panjiachen.github.io/vue-element-admin-site/)
-
-- [Gitter](https://gitter.im/vue-element-admin/discuss)
-
-- [Donate](https://panjiachen.github.io/vue-element-admin-site/donate/)
-
-- [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
-
-- [Gitee](https://panjiachen.gitee.io/vue-element-admin/) 国内用户可访问该地址在线预览
-
-- Base template recommends using: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
-- Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
-- Typescript: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
-- [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
-
-**After the `v4.1.0+` version, the default master branch will not support i18n. Please use [i18n Branch](https://github.com/PanJiaChen/vue-element-admin/tree/i18n), it will keep up with the master update**
-
-**The current version is `v4.0+` build on `vue-cli`. If you find a problem, please put [issue](https://github.com/PanJiaChen/vue-element-admin/issues/new). If you want to use the old version , you can switch branch to [tag/3.11.0](https://github.com/PanJiaChen/vue-element-admin/tree/tag/3.11.0), it does not rely on `vue-cli`**
-
-**This project does not support low version browsers (e.g. IE). Please add polyfill by yourself.**
-
-## Preparation
-
-You need to install [node](https://nodejs.org/) and [git](https://git-scm.com/) locally. The project is based on [ES2015+](https://es6.ruanyifeng.com/), [vue](https://cn.vuejs.org/index.html), [vuex](https://vuex.vuejs.org/zh-cn/), [vue-router](https://router.vuejs.org/zh-cn/), [vue-cli](https://github.com/vuejs/vue-cli) , [axios](https://github.com/axios/axios) and [element-ui](https://github.com/ElemeFE/element), all request data is simulated using [Mock.js](https://github.com/nuysoft/Mock).
-Understanding and learning this knowledge in advance will greatly help the use of this project.
-
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/PanJiaChen/vue-element-admin/tree/CodeSandbox)
-
-<p align="center">
-  <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
-</p>
-
-## Sponsors
-
-Become a sponsor and get your logo on our README on GitHub with a link to your site. [[Become a sponsor]](https://www.patreon.com/panjiachen)
-
-### Akveo
-<a href="https://store.akveo.com/products/vue-java-admin-dashboard-spring?utm_campaign=akveo_store-Vue-Vue_demo%2Fgithub&utm_source=vue_admin&utm_medium=referral&utm_content=github_banner"><img width="500px" src="https://raw.githubusercontent.com/PanJiaChen/vue-element-admin-site/master/docs/.vuepress/public/images/vue-java-banner.png" /></a><p>Get Java backend for Vue admin with 20% discount for 39$ use coupon code SWB0RAZPZR1M
-</p>
-
-### Flatlogic
-
-<a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Admin Dashboard Templates made with Vue, React and Angular.</p>
-
-## Features
-
-```
-- Login / Logout
-
-- Permission Authentication
-  - Page permission
-  - Directive permission
-  - Permission configuration page
-  - Two-step login
-
-- Multi-environment build
-  - Develop (dev)
-  - sit
-  - Stage Test (stage)
-  - Production (prod)
-
-- Global Features
-  - I18n
-  - Multiple dynamic themes
-  - Dynamic sidebar (supports multi-level routing)
-  - Dynamic breadcrumb
-  - Tags-view (Tab page Support right-click operation)
-  - Svg Sprite
-  - Mock data
-  - Screenfull
-  - Responsive Sidebar
+---
 
-- Editor
-  - Rich Text Editor
-  - Markdown Editor
-  - JSON Editor
+## 目录
 
-- Excel
-  - Export Excel
-  - Upload Excel
-  - Visualization Excel
-  - Export zip
+- [简介](#简介)
+- [功能特点](#功能特点)
+- [技术架构](#技术架构)
+- [安装部署](#安装部署)
+- [使用说明](#使用说明)
+- [模块介绍](#模块介绍)
+- [贡献指南](#贡献指南)
+- [许可证](#许可证)
 
-- Table
-  - Dynamic Table
-  - Drag And Drop Table
-  - Inline Edit Table
+---
 
-- Error Page
-  - 401
-  - 404
+## 简介
 
-- Components
-  - Avatar Upload
-  - Back To Top
-  - Drag Dialog
-  - Drag Select
-  - Drag Kanban
-  - Drag List
-  - SplitPane
-  - Dropzone
-  - Sticky
-  - CountTo
+职校综合服务平台是面向职业院校的一体化服务系统，旨在提升学校的信息化水平和管理效率。平台基于苍穹低代码开发平台构建，支持私有化部署，满足学校对数据安全和自主可控的要求。
 
-- Advanced Example
-- Error Log
-- Dashboard
-- Guide Page
-- ECharts
-- Clipboard
-- Markdown to html
-```
+平台聚焦于学校的核心业务需求，提供**"教师一张表"**和**"学生一张表"**等特色功能，方便教师和学生自助维护个人信息，减少重复填写，提高各项事务的办理效率。
 
-## Getting started
+## 功能特点
 
-```bash
-# clone the project
-git clone https://github.com/PanJiaChen/vue-element-admin.git
+- **教师一张表**：教师可自助查询和维护个人信息，用于校内各项表格填报和数据共享。
+- **学生一张表**：学生可自助查询和维护个人信息，方便各类校园事务的办理。
+- **定制化模块**：提供党建思政、学工管理、人事管理、科研管理、后勤资产管理、校企合作、工会等功能模块。
+- **数据统一与标准化**：实现数据的统一管理，支持数据统计、分析和上报。
+- **友好界面与移动访问**：采用现代化的界面设计，支持PC和移动端访问。
+- **高安全性**：支持私有化部署，具备完善的身份认证和权限控制机制，确保数据安全。
 
-# enter the project directory
-cd vue-element-admin
+## 技术架构
 
-# install dependency
-npm install
+- **开发平台**：苍穹低代码开发平台
+- **前端**：基于平台的可视化界面设计工具
+- **后端**：平台内置的业务逻辑配置和流程引擎
+- **数据库**：支持 MySQL、SQL Server 等主流关系型数据库
+- **部署方式**：支持私有化部署，满足学校对数据安全和合规性的要求
 
-# develop
-npm run dev
-```
+## 安装部署
 
-This will automatically open http://localhost:9527
+### 环境要求
 
-## Build
+- **操作系统**：Windows Server 或 Linux
+- **数据库**：MySQL 5.7+/SQL Server 2012+
+- **内存**：至少 8GB（根据实际用户规模调整）
+- **硬盘空间**：至少 100GB（根据数据量调整）
+- **网络**：稳定的校园网络环境
 
-```bash
-# build for test environment
-npm run build:stage
+### 安装步骤
 
-# build for production environment
-npm run build:prod
-```
+1. **获取安装包**：请联系供应商获取平台的安装包和许可证。
+2. **部署数据库**：根据提供的数据库脚本，初始化数据库。
+3. **安装平台**：运行安装程序，按照向导完成平台的安装。
+4. **配置系统**：根据学校实际情况，配置系统参数和模块。
+5. **导入数据**：导入教师和学生的初始数据。
+6. **启动服务**：启动平台服务，确保系统正常运行。
 
-## Advanced
+## 使用说明
 
-```bash
-# preview the release environment effect
-npm run preview
+### 教师登录
 
-# preview the release environment effect + static resource analysis
-npm run preview -- --report
+1. 访问平台登录页面。
+2. 输入用户名和密码（初始密码可由管理员提供或使用统一认证）。
+3. 登录后，可在**"教师一张表"**中查看和维护个人信息。
 
-# code format check
-npm run lint
+### 学生登录
 
-# code format check and auto fix
-npm run lint -- --fix
-```
+1. 访问平台登录页面。
+2. 输入学号和密码（初始密码可由管理员提供或使用统一认证）。
+3. 登录后，可在**"学生一张表"**中查看和维护个人信息。
 
-Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) for more information
+### 管理员操作
 
-## Changelog
+- **用户管理**：添加、删除或修改用户信息，分配角色和权限。
+- **模块配置**：根据学校需求，启用或关闭特定功能模块。
+- **数据维护**：定期备份数据，确保数据安全和完整性。
 
-Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
+## 模块介绍
 
-## Online Demo
+### 1. 基础信息管理
 
-[Preview](https://panjiachen.github.io/vue-element-admin)
+- **教师一张表**
+- **学生一张表**
 
-## Donate
+### 2. 党建思政
 
-If you find this project useful, you can buy author a glass of juice :tropical_drink:
+- 党组织管理
+- 党员发展
+- 党员学习与活动
+- 思政工作
 
-![donate](https://wpimg.wallstcn.com/bd273f0d-83a0-4ef2-92e1-9ac8ed3746b9.png)
+### 3. 学工管理
 
-[Paypal Me](https://www.paypal.me/panfree23)
+- 活动管理
+- 社团管理
+- 综合测评
 
-[Buy me a coffee](https://www.buymeacoffee.com/Pan)
+### 4. 人事管理
 
-## Browsers support
+- 教职工考核管理
+- 绩效分析
 
-Modern browsers and Internet Explorer 10+.
+### 5. 科研管理
 
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Safari |
-| --------- | --------- | --------- | --------- |
-| IE10, IE11, Edge | last 2 versions | last 2 versions | last 2 versions |
+- 科研项目管理
+- 科研成果管理
+- 学术活动管理
 
-## License
+### 6. 后勤资产管理
 
-[MIT](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
+- 资产登记
+- 资产维护
+- 资产报废
 
-Copyright (c) 2017-present PanJiaChen
+### 7. 校企合作
+
+- 合作项目管理
+- 企业信息库
+- 合作课程开发
+
+### 8. 工会
+
+- 会员管理
+- 活动组织
+- 福利管理
+
+## 贡献指南
+
+欢迎您为职校综合服务平台做出贡献！您可以通过以下方式参与：
+
+- **反馈问题**：在 issue 中提交您发现的 bug 或建议。
+- **提交代码**：fork 本项目，提交 pull request。
+- **文档完善**：优化和补充使用文档。
+
+请确保您的贡献符合我们的编码规范和提交指南。
+
+## 许可证
+
+本项目遵循 [MIT 许可证](LICENSE)，详细信息请查阅许可证文件。
+
+---
+
+感谢您选择职校综合服务平台，我们将竭诚为您服务！
