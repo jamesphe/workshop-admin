@@ -7,6 +7,7 @@ const article = require('./article')
 const search = require('./remote-search')
 const teacher = require('./teacher')
 const research = require('./research')
+const dashboard = require('./dashboard')
 
 const mocks = [
   ...user,
@@ -14,7 +15,8 @@ const mocks = [
   ...article,
   ...search,
   ...teacher,
-  ...research
+  ...research,
+  ...dashboard
 ]
 
 // for front mock
