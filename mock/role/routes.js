@@ -521,7 +521,42 @@ const asyncRoutes = [
     ]
   },
 
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true },
+
+  {
+    path: '/basic-info',
+    component: 'Layout',
+    redirect: '/basic-info/teacher-info',
+    alwaysShow: true,
+    name: 'BasicInfo',
+    meta: {
+      title: '基础信息',
+      icon: 'list',
+      roles: ['admin', 'teacher']
+    },
+    children: [
+      {
+        path: 'teacher-info',
+        component: 'views/basic-info/teacher-info/index',
+        name: 'TeacherInfo',
+        meta: { 
+          title: '教师一张表',
+          icon: 'user',
+          roles: ['admin', 'teacher']
+        }
+      },
+      {
+        path: 'student-info',
+        component: 'views/basic-info/student-info/index',
+        name: 'StudentInfo',
+        meta: { 
+          title: '学生一张表',
+          icon: 'peoples',
+          roles: ['admin', 'teacher']
+        }
+      }
+    ]
+  }
 ]
 
 module.exports = {
