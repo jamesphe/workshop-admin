@@ -47,6 +47,13 @@ export const asyncRoutes = [
         component: () => import('@/views/basic-info/student-info/index'),
         name: 'StudentInfo',
         meta: { title: '学生一张表' }
+      },
+      {
+        path: '/basic-info/student-info/detail/:id',
+        component: () => import('@/views/basic-info/student-info/detail'),
+        name: 'StudentDetail',
+        meta: { title: '学生详情' },
+        hidden: true
       }
     ]
   },

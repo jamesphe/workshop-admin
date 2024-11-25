@@ -49,35 +49,36 @@
         :data="studentList"
         border
         style="width: 100%"
+        :fit="true"
       >
         <!-- 基本信息 -->
         <el-table-column label="基本信息" align="center">
-          <el-table-column prop="studentNumber" label="学号" width="100" />
-          <el-table-column prop="name" label="姓名" width="100" />
-          <el-table-column prop="gender" label="性别" width="60">
+          <el-table-column prop="studentNumber" label="学号" min-width="100" />
+          <el-table-column prop="name" label="姓名" min-width="80" />
+          <el-table-column prop="gender" label="性别" min-width="60">
             <template #default="{ row }">
               {{ row.gender === 'male' ? '男' : row.gender === 'female' ? '女' : '其他' }}
             </template>
           </el-table-column>
-          <el-table-column prop="dateOfBirth" label="出生日期" width="100" />
-          <el-table-column prop="politicalStatus" label="政治面貌" width="100" />
+          <el-table-column prop="dateOfBirth" label="出生日期" min-width="100" />
+          <el-table-column prop="politicalStatus" label="政治面貌" min-width="100" />
         </el-table-column>
 
         <!-- 学籍信息 -->
         <el-table-column label="学籍信息" align="center">
-          <el-table-column prop="department" label="所属院系" width="150">
+          <el-table-column prop="department" label="所属院系" min-width="150">
             <template #default="{ row }">
               {{ getDepartmentLabel(row.department) }}
             </template>
           </el-table-column>
-          <el-table-column prop="major" label="专业" width="120" />
-          <el-table-column prop="grade" label="年级" width="80">
+          <el-table-column prop="major" label="专业" min-width="120" />
+          <el-table-column prop="grade" label="年级" min-width="80">
             <template #default="{ row }">
               {{ row.grade }}级
             </template>
           </el-table-column>
-          <el-table-column prop="class" label="班级" width="100" />
-          <el-table-column prop="status" label="学籍状态" width="80">
+          <el-table-column prop="class" label="班级" min-width="80" />
+          <el-table-column prop="status" label="学籍状态" min-width="80">
             <template #default="{ row }">
               <el-tag :type="getStatusType(row.status)">{{ row.status }}</el-tag>
             </template>
@@ -86,13 +87,29 @@
 
         <!-- 学习信息 -->
         <el-table-column label="学习信息" align="center">
-          <el-table-column prop="gpa" label="平均绩点" width="80">
+          <el-table-column prop="averageScore" label="平均成绩" min-width="100">
             <template #default="{ row }">
-              <el-tag :type="getGpaType(row.gpa)">{{ row.gpa }}</el-tag>
+              <el-tooltip effect="dark" placement="top">
+                <div slot="content">
+                  成绩等级说明：<br>
+                  90-100分：优秀<br>
+                  80-89分：良好<br>
+                  70-79分：中等<br>
+                  60-69分：及格<br>
+                  60分以下：不及格
+                </div>
+                <el-tag :type="getScoreType(row.averageScore)">
+                  {{ row.averageScore }}分
+                </el-tag>
+              </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="credits" label="已修学分" width="80" />
-          <el-table-column prop="ranking" label="专业排名" width="100">
+          <el-table-column prop="totalCredits" label="已修学分" min-width="100">
+            <template #default="{ row }">
+              {{ row.totalCredits }}/{{ row.requiredCredits }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="ranking" label="专业排名" min-width="100">
             <template #default="{ row }">
               {{ row.ranking }}/{{ row.totalStudents }}
             </template>
@@ -101,12 +118,12 @@
 
         <!-- 联系方式 -->
         <el-table-column label="联系方式" align="center">
-          <el-table-column prop="phoneNumber" label="手机号码" width="120" />
-          <el-table-column prop="email" label="电子邮箱" width="180" />
+          <el-table-column prop="phoneNumber" label="手机号码" min-width="120" />
+          <el-table-column prop="email" label="电子邮箱" min-width="180" />
         </el-table-column>
 
         <!-- 操作 -->
-        <el-table-column label="操作" width="200" fixed="right">
+        <el-table-column label="操作" min-width="180" fixed="right">
           <template #default="{ row }">
             <el-button type="text" @click="handleEdit(row)">编辑</el-button>
             <el-button type="text" @click="handleView(row)">查看</el-button>
@@ -140,7 +157,7 @@
 <script>
 import Pagination from '@/components/Pagination'
 import StudentForm from './components/StudentForm'
-import { getStudentList, deleteStudent } from '@/api/student'
+import { getStudentList, deleteStudent, getStudent } from '@/api/student'
 
 export default {
   name: 'StudentInfo',
@@ -200,6 +217,7 @@ export default {
         this.total = data.total
       } catch (error) {
         console.error('获取学生列表失败:', error)
+        this.$message.error('获取学生列表失败')
       } finally {
         this.loading = false
       }
@@ -224,26 +242,38 @@ export default {
       this.selectedStudent = null
       this.dialogVisible = true
     },
-    handleEdit(row) {
-      this.dialogTitle = '编辑学生'
-      this.selectedStudent = { ...row }
-      this.dialogVisible = true
+    async handleEdit(row) {
+      try {
+        const { data } = await getStudent(row.id)
+        this.dialogTitle = '编辑学生'
+        this.selectedStudent = data
+        this.dialogVisible = true
+      } catch (error) {
+        console.error('获取学生详情失败:', error)
+        this.$message.error('获取学生详情失败')
+      }
     },
     handleView(row) {
-      this.$router.push({ path: `/basic-info/student-info/detail/${row.id}` })
+      this.$router.push({ 
+        path: `/basic-info/student-info/detail/${row.id}`,
+        query: { student: JSON.stringify(row) }
+      })
     },
-    handleDelete(row) {
-      this.$confirm('确认删除该学生信息吗？', '警告', {
-        type: 'warning'
-      }).then(async() => {
-        try {
-          await deleteStudent(row.id)
-          this.$message.success('删除成功')
-          this.getList()
-        } catch (error) {
+    async handleDelete(row) {
+      try {
+        await this.$confirm('确认删除该学生信息吗？', '警告', {
+          type: 'warning'
+        })
+        
+        await deleteStudent(row.id)
+        this.$message.success('删除成功')
+        this.getList()
+      } catch (error) {
+        if (error !== 'cancel') {
           console.error('删除学生失败:', error)
+          this.$message.error('删除学生失败')
         }
-      }).catch(() => {})
+      }
     },
     handleSuccess() {
       this.dialogVisible = false
@@ -267,10 +297,11 @@ export default {
       }
       return types[status] || ''
     },
-    getGpaType(gpa) {
-      if (gpa >= 3.5) return 'success'
-      if (gpa >= 3.0) return 'primary'
-      if (gpa >= 2.0) return 'warning'
+    getScoreType(score) {
+      if (score >= 90) return 'success'
+      if (score >= 80) return 'primary'
+      if (score >= 70) return 'warning'
+      if (score >= 60) return 'info'
       return 'danger'
     }
   }

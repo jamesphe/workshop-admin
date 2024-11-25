@@ -1,12 +1,20 @@
 const Mock = require('mockjs')
 
-// 使用 Multiavatar API 生成头像
-const getAvatarUrl = (name) => {
-  // 使用姓名的 MD5 值作为种子，确保同一个姓名生成相同的头像
-  const seed = name.split('').reduce((acc, char) => {
-    return acc + char.charCodeAt(0)
-  }, 0)
-  return `https://api.multiavatar.com/${seed}.svg`
+// 使用 Random User API 生成真人头像
+const getAvatarUrl = (gender) => {
+  // 根据性别选择不同的头像集合
+  // gender 为 'male', 'female' 或 'other'
+  let portraitType = 'men'
+  if (gender === 'female') {
+    portraitType = 'women'
+  } else if (gender === 'other') {
+    // 对于其他性别随机选择
+    portraitType = Mock.Random.pick(['men', 'women'])
+  }
+  
+  // 生成0-99的随机数作为头像id
+  const id = Mock.Random.integer(0, 99)
+  return `https://randomuser.me/api/portraits/${portraitType}/${id}.jpg`
 }
 
 // 定义班级列表
@@ -134,7 +142,7 @@ for (let i = 0; i < count; i++) {
     email: '@email',
     address: '@county(true)',
     photo() {
-      return getAvatarUrl(this.name)
+      return getAvatarUrl(this.gender)
     },
 
     // 2. 教职信息

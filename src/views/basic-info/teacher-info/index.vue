@@ -51,50 +51,51 @@
         :data="teacherList"
         border
         style="width: 100%"
+        :fit="true"
       >
         <!-- 基本信息 -->
         <el-table-column label="基本信息" align="center">
-          <el-table-column prop="employeeNumber" label="工号" width="100" />
-          <el-table-column prop="name" label="姓名" width="100" />
-          <el-table-column prop="gender" label="性别" width="60">
+          <el-table-column prop="employeeNumber" label="工号" min-width="100" />
+          <el-table-column prop="name" label="姓名" min-width="80" />
+          <el-table-column prop="gender" label="性别" min-width="60">
             <template #default="{ row }">
               {{ row.gender === 'male' ? '男' : row.gender === 'female' ? '女' : '其他' }}
             </template>
           </el-table-column>
-          <el-table-column prop="dateOfBirth" label="出生日期" width="100" />
-          <el-table-column prop="politicalStatus" label="政治面貌" width="100" />
+          <el-table-column prop="dateOfBirth" label="出生日期" min-width="100" />
+          <el-table-column prop="politicalStatus" label="政治面貌" min-width="100" />
         </el-table-column>
 
         <!-- 教职信息 -->
         <el-table-column label="教职信息" align="center">
-          <el-table-column prop="department" label="所属部门" width="150">
+          <el-table-column prop="department" label="所属部门" min-width="150">
             <template #default="{ row }">
               {{ getDepartmentLabel(row.department) }}
             </template>
           </el-table-column>
-          <el-table-column prop="position" label="职称" width="100">
+          <el-table-column prop="position" label="职称" min-width="100">
             <template #default="{ row }">
               <el-tag :type="getPositionType(row.position)">{{ getPositionLabel(row.position) }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="employmentType" label="雇佣类型" width="80" />
-          <el-table-column prop="employmentStatus" label="工作状态" width="80">
+          <el-table-column prop="employmentType" label="雇佣类型" min-width="80" />
+          <el-table-column prop="employmentStatus" label="工作状态" min-width="80">
             <template #default="{ row }">
               <el-tag :type="getStatusType(row.employmentStatus)">{{ row.employmentStatus }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="hireDate" label="入职日期" width="100" />
+          <el-table-column prop="hireDate" label="入职日期" min-width="100" />
         </el-table-column>
 
         <!-- 教学信息 -->
         <el-table-column label="教学信息" align="center">
-          <el-table-column prop="teachingSubject" label="主讲课程" width="120" />
-          <el-table-column prop="workload" label="工作量" width="80">
+          <el-table-column prop="teachingSubject" label="主讲课程" min-width="120" />
+          <el-table-column prop="workload" label="工作量" min-width="80">
             <template #default="{ row }">
               {{ row.workload }}学时
             </template>
           </el-table-column>
-          <el-table-column prop="evaluationScore" label="教学评分" width="80">
+          <el-table-column prop="evaluationScore" label="教学评分" min-width="80">
             <template #default="{ row }">
               <el-tag :type="getScoreType(row.evaluationScore)">{{ row.evaluationScore }}</el-tag>
             </template>
@@ -103,12 +104,12 @@
 
         <!-- 联系方式 -->
         <el-table-column label="联系方式" align="center">
-          <el-table-column prop="phoneNumber" label="手机号码" width="120" />
-          <el-table-column prop="email" label="电子邮箱" width="180" />
+          <el-table-column prop="phoneNumber" label="手机号码" min-width="120" />
+          <el-table-column prop="email" label="电子邮箱" min-width="180" />
         </el-table-column>
 
         <!-- 操作 -->
-        <el-table-column label="操作" width="200" fixed="right">
+        <el-table-column label="操作" min-width="180" fixed="right">
           <template #default="{ row }">
             <el-button type="text" @click="handleEdit(row)">编辑</el-button>
             <el-button type="text" @click="handleView(row)">查看</el-button>
