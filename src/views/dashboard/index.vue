@@ -144,7 +144,8 @@ export default {
           path: '/assets',
           badge: '3'
         }
-      ]
+      ],
+      loading: false
     }
   },
   computed: {
@@ -166,20 +167,26 @@ export default {
   },
   methods: {
     async initData() {
+      this.loading = true
       try {
         const [statsRes, todoRes] = await Promise.all([
           getStatistics(),
           getTodoList()
         ])
-        this.statisticsData = statsRes.data
-        this.todoList = todoRes.data
+        this.statisticsData = statsRes.data || []
+        this.todoList = todoRes.data || []
       } catch (error) {
-        console.error('Failed to fetch dashboard data:', error)
+        console.error('获取仪表盘数据失败:', error)
+        this.$message.error('获取数据失败，请稍后重试')
+      } finally {
+        this.loading = false
       }
     },
     async initChart() {
       try {
         const { data } = await getChartData()
+        if (!data || !this.$refs.mainChart) return
+
         this.chartInstance = echarts.init(this.$refs.mainChart)
         this.chartInstance.setOption({
           tooltip: {
@@ -212,7 +219,8 @@ export default {
           }))
         })
       } catch (error) {
-        console.error('Failed to init chart:', error)
+        console.error('初始化图表失败:', error)
+        this.$message.error('图表加载失败，请稍后重试')
       }
     },
     resizeChart() {

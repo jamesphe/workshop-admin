@@ -34,7 +34,7 @@
           <div class="score-content">
             <el-progress
               type="dashboard"
-              :percentage="teacherInfo.performanceScore || 0"
+              :percentage="normalizePercentage(teacherInfo.performanceScore)"
               :color="getScoreColor"
             >
               <template #default="{ percentage }">
@@ -186,6 +186,12 @@ export default {
       if (score >= 80) return '#409EFF'
       if (score >= 70) return '#E6A23C'
       return '#F56C6C'
+    },
+    normalizePercentage(value) {
+      if (!value && value !== 0) return 0
+      const num = Number(value)
+      if (isNaN(num)) return 0
+      return Math.min(Math.max(Math.round(num), 0), 100)
     }
   }
 }
