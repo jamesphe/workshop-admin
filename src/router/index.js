@@ -60,7 +60,7 @@ export const asyncRoutes = [
   {
     path: '/student-affairs',
     component: Layout,
-    meta: { title: '学工管理', icon: 'el-icon-s-custom' },
+    meta: { title: '学生服务', icon: 'el-icon-s-custom' },
     children: [
       {
         path: 'activities',
@@ -91,7 +91,7 @@ export const asyncRoutes = [
   {
     path: '/personnel',
     component: Layout,
-    meta: { title: '人事管理', icon: 'el-icon-s-check' },
+    meta: { title: '教师考核', icon: 'el-icon-s-check' },
     children: [
       {
         path: 'assessment',

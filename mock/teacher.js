@@ -1,6 +1,6 @@
 const Mock = require('mockjs')
 
-// 使用 Random User API 生成真人头像
+// 使用 Random User API 生成亚裔教师头像
 const getAvatarUrl = (gender) => {
   // 根据性别选择不同的头像集合
   // gender 为 'male', 'female' 或 'other'
@@ -12,9 +12,11 @@ const getAvatarUrl = (gender) => {
     portraitType = Mock.Random.pick(['men', 'women'])
   }
   
+  // 使用 randomuser.me 的 API 参数来获取中国头像
+  // 添加 ?nat=CN 参数来获取中国头像
   // 生成0-99的随机数作为头像id
   const id = Mock.Random.integer(0, 99)
-  return `https://randomuser.me/api/portraits/${portraitType}/${id}.jpg`
+  return `https://randomuser.me/api/portraits/${portraitType}/${id}.jpg?nat=CN`
 }
 
 // 定义班级列表
