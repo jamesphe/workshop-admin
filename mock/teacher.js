@@ -154,7 +154,12 @@ for (let i = 0; i < count; i++) {
     employmentType: '@pick(["正式", "兼职", "临时"])',
     hireDate,
     contractEndDate: '@date',
-    employmentStatus: '@pick(["在职", "离职", "退休"])',
+    employmentStatus() {
+      const random = Math.random() * 100
+      if (random < 85) return '在职'
+      if (random < 95) return '离职'
+      return '退休'
+    },
     salaryGrade: '@pick(["一级", "二级", "三级", "四级"])',
     workload: '@integer(10, 20)',
     teachingSubject: '@pick(["Java程序设计", "数据结构", "计算机网络", "操作系统"])',
