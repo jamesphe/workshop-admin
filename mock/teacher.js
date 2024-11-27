@@ -318,7 +318,89 @@ for (let i = 0; i < count; i++) {
     emergencyContact: '@cname',
     emergencyPhone: /^1[3-9]\d{9}$/,
     healthStatus: '@pick(["健康", "良好", "一般"])',
-    remarks: '@cparagraph(1)'
+    remarks: '@cparagraph(1)',
+
+    // 添加教学评分相关字段
+    teachingEvaluation: {
+      // 教学态度评分 (0-5分)
+      attitudeScore: '@float(3, 5, 0, 1)',
+      // 教学内容评分 (0-5分)
+      contentScore: '@float(3, 5, 0, 1)',
+      // 教学效果评分 (0-5分)
+      effectScore: '@float(3, 5, 0, 1)',
+      // 评价详情
+      details: [
+        {
+          semester: '2023-2024-1',
+          courses: function() {
+            const courses = []
+            const count = Mock.Random.integer(1, 3)
+            for (let i = 0; i < count; i++) {
+              courses.push({
+                courseName: Mock.Random.pick(['Java程序设计', '数据结构', '计算机网络', '操作系统']),
+                attitudeScore: Mock.Random.float(3, 5, 0, 1),
+                contentScore: Mock.Random.float(3, 5, 0, 1),
+                effectScore: Mock.Random.float(3, 5, 0, 1),
+                studentCount: Mock.Random.integer(30, 100),
+                comments: Mock.Random.pick([
+                  '讲课生动有趣',
+                  '认真负责',
+                  '课程内容充实',
+                  '与学生互动良好',
+                  '讲解深入浅出'
+                ])
+              })
+            }
+            return courses
+          }
+        },
+        {
+          semester: '2022-2023-2',
+          courses: function() {
+            const courses = []
+            const count = Mock.Random.integer(1, 3)
+            for (let i = 0; i < count; i++) {
+              courses.push({
+                courseName: Mock.Random.pick(['Java程序设计', '数据结构', '计算机网络', '操作系统']),
+                attitudeScore: Mock.Random.float(3, 5, 0, 1),
+                contentScore: Mock.Random.float(3, 5, 0, 1),
+                effectScore: Mock.Random.float(3, 5, 0, 1),
+                studentCount: Mock.Random.integer(30, 100),
+                comments: Mock.Random.pick([
+                  '讲课生动有趣',
+                  '认真负责',
+                  '课程内容充实',
+                  '与学生互动良好',
+                  '讲解深入浅出'
+                ])
+              })
+            }
+            return courses
+          }
+        }
+      ],
+      // 学生评语
+      studentComments: function() {
+        const comments = []
+        const count = Mock.Random.integer(2, 5)
+        for (let i = 0; i < count; i++) {
+          comments.push({
+            content: Mock.Random.pick([
+              '老师讲课非常认真负责',
+              '课程内容充实，收获很大',
+              '老师能够深入浅出地讲解复杂概念',
+              '课堂氛围活跃，互动性强',
+              '作业布置合理，对学习很有帮助',
+              '老师备课充分，逻辑清晰'
+            ]),
+            semester: Mock.Random.pick(['2023-2024-1', '2022-2023-2']),
+            courseName: Mock.Random.pick(['Java程序设计', '数据结构', '计算机网络', '操作系统']),
+            rating: Mock.Random.float(3, 5, 0, 1)
+          })
+        }
+        return comments
+      }
+    }
   }))
 }
 

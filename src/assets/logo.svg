@@ -1,0 +1,12 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 书本形状 -->
+  <path d="M40 40H160V160C160 160 120 140 100 140C80 140 40 160 40 160V40Z" fill="#409EFF"/>
+  <!-- 书页 -->
+  <path d="M45 45H155V155C155 155 120 138 100 138C80 138 45 155 45 155V45Z" fill="white"/>
+  <!-- 学士帽 -->
+  <path d="M70 70L100 50L130 70L100 90L70 70Z" fill="#409EFF"/>
+  <path d="M85 85V105L100 112L115 105V85L100 92L85 85Z" fill="#409EFF"/>
+  <rect x="97" y="50" width="6" height="30" fill="#409EFF"/>
+  <!-- 圆点装饰 -->
+  <circle cx="100" cy="45" r="3" fill="#409EFF"/>
+</svg> 

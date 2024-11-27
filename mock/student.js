@@ -134,15 +134,15 @@ for (let i = 0; i < count; i++) {
   const totalCredits = Mock.Random.integer(0, 150)
   const requiredCredits = 150
   const averageScore = Mock.Random.integer(60, 100)
-  const gender = Mock.Random.pick(['male', 'female'])  // 先生成性别
-  const name = generateName(gender)  // 根据性别生成对应的姓名
+  const gender = Math.random() < 0.5 ? '男' : '女' // 先生成性别
+  const name = generateName(gender) // 根据性别生成对应的姓名
 
   studentList.push({
     // 基本信息
     id: i + 1,
-    name,  // 使用生成的姓名
+    name, // 使用生成的姓名
     studentNumber: `2020${Mock.Random.string('number', 6)}`,
-    gender,  // 使用生成的性别
+    gender, // 使用生成的性别
     dateOfBirth: Mock.Random.date(),
     politicalStatus: Mock.Random.pick(['群众', '共青团员', '中共党员']),
     department: [
@@ -152,8 +152,14 @@ for (let i = 0; i < count; i++) {
     major: Mock.Random.pick(['计算机科学与技术', '软件工程', '机械工程', '中国语言文学', '英语']),
     grade: Mock.Random.pick([2020, 2021, 2022, 2023]),
     class: Mock.Random.pick(classList),
-    status: Mock.Random.pick(['在读', '休学', '退学', '毕业']),
-    photo: getAvatarUrl(gender),  // 使用相同的性别生成头像
+    status() {
+      const random = Math.random() * 100
+      if (random < 85) return '在读'
+      if (random < 90) return '休学'
+      if (random < 95) return '退学'
+      return '毕业'
+    },
+    avatar: getAvatarUrl(gender), // 使用相同的性别生成头像
 
     // 学籍信息
     enrollmentDate: Mock.Random.date(),

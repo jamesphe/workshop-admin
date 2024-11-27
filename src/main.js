@@ -27,7 +27,7 @@ import DescriptionsItem from '@/components/Descriptions/Item'
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
  */
-if (process.env.NODE_ENV === 'development') {
+if (process.env.VUE_APP_USE_MOCK === 'true') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }

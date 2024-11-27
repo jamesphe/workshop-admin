@@ -10,7 +10,7 @@ const name = defaultSettings.title || 'vue Element Admin'
 const port = process.env.port || process.env.npm_config_port || 9527
 
 module.exports = {
-  publicPath: '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',

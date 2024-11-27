@@ -1,96 +1,93 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
-
-      <div class="title-container">
-        <h3 class="title">Login Form</h3>
+    <div class="login-box">
+      <div class="platform-info">
+        <img src="@/assets/logo.svg" class="platform-logo" alt="logo">
+        <h2 class="platform-name">职校综合服务平台</h2>
+        <p class="platform-desc">数字化校园管理系统</p>
       </div>
+      
+      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on">
+        <div class="welcome-text">
+          <p class="welcome">欢迎登录</p>
+          <p class="sub-welcome">请使用您的账号密码登录系统</p>
+        </div>
 
-      <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
-          type="text"
-          tabindex="1"
-          autocomplete="on"
-        />
-      </el-form-item>
-
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
-        <el-form-item prop="password">
+        <el-form-item prop="username">
           <span class="svg-container">
-            <svg-icon icon-class="password" />
+            <svg-icon icon-class="user" />
           </span>
           <el-input
-            :key="passwordType"
-            ref="password"
-            v-model="loginForm.password"
-            :type="passwordType"
-            placeholder="Password"
-            name="password"
-            tabindex="2"
+            ref="username"
+            v-model="loginForm.username"
+            placeholder="工号/学号"
+            name="username"
+            type="text"
+            tabindex="1"
             autocomplete="on"
-            @keyup.native="checkCapslock"
-            @blur="capsTooltip = false"
-            @keyup.enter.native="handleLogin"
           />
-          <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-          </span>
         </el-form-item>
-      </el-tooltip>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+        <el-tooltip v-model="capsTooltip" content="大写锁定已开启" placement="right" manual>
+          <el-form-item prop="password">
+            <span class="svg-container">
+              <svg-icon icon-class="password" />
+            </span>
+            <el-input
+              :key="passwordType"
+              ref="password"
+              v-model="loginForm.password"
+              :type="passwordType"
+              placeholder="密码"
+              name="password"
+              tabindex="2"
+              autocomplete="on"
+              @keyup.native="checkCapslock"
+              @blur="capsTooltip = false"
+              @keyup.enter.native="handleLogin"
+            />
+            <span class="show-pwd" @click="showPwd">
+              <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            </span>
+          </el-form-item>
+        </el-tooltip>
 
-      <div style="position:relative">
-        <div class="tips">
-          <span>Username : admin</span>
-          <span>Password : any</span>
-        </div>
-        <div class="tips">
-          <span style="margin-right:18px;">Username : editor</span>
-          <span>Password : any</span>
-        </div>
-
-        <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
-          Or connect with
+        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:20px;" @click.native.prevent="handleLogin">
+          {{ loading ? '登录中...' : '登 录' }}
         </el-button>
-      </div>
-    </el-form>
 
-    <el-dialog title="Or connect with" :visible.sync="showDialog">
-      Can not be simulated on local, so please combine you own business simulation! ! !
-      <br>
-      <br>
-      <br>
-      <social-sign />
-    </el-dialog>
+        <div class="login-footer">
+          <div class="role-select">
+            <span class="role-item" :class="{ active: currentRole === 'teacher' }" @click="switchRole('teacher')">教师端</span>
+            <span class="role-item" :class="{ active: currentRole === 'student' }" @click="switchRole('student')">学生端</span>
+            <span class="role-item" :class="{ active: currentRole === 'admin' }" @click="switchRole('admin')">管理端</span>
+          </div>
+          <div class="copyright">© 2024 职校综合服务平台 版权所有</div>
+        </div>
+      </el-form>
+    </div>
   </div>
 </template>
 
 <script>
 import { validUsername } from '@/utils/validate'
-import SocialSign from './components/SocialSignin'
 
 export default {
   name: 'Login',
-  components: { SocialSign },
+  components: {
+    // 删除未使用的 SocialSign 组件
+  },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error('请输入正确的用户名'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('密码不能少于6位'))
       } else {
         callback()
       }
@@ -109,7 +106,8 @@ export default {
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {}
+      otherQuery: {},
+      currentRole: 'teacher'
     }
   },
   watch: {
@@ -177,6 +175,9 @@ export default {
         }
         return acc
       }, {})
+    },
+    switchRole(role) {
+      this.currentRole = role
     }
     // afterQRScan() {
     //   if (e.key === 'x-admin-oauth-code') {
@@ -200,124 +201,306 @@ export default {
 }
 </script>
 
-<style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-
-$bg:#283443;
-$light_gray:#fff;
-$cursor: #fff;
-
-@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
-    color: $cursor;
-  }
-}
-
-/* reset element-ui css */
-.login-container {
-  .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 85%;
-
-    input {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: $light_gray;
-      height: 47px;
-      caret-color: $cursor;
-
-      &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: $cursor !important;
-      }
-    }
-  }
-
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 $bg:#2d3a4b;
 $dark_gray:#889aa4;
 $light_gray:#eee;
 
 .login-container {
-  min-height: 100%;
+  min-height: 100vh;
   width: 100%;
-  background-color: $bg;
+  background: url('~@/assets/school-bg.jpg') center center / cover no-repeat fixed;
+  position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  .login-form {
-    position: relative;
-    width: 520px;
-    max-width: 100%;
-    padding: 160px 35px 0;
-    margin: 0 auto;
-    overflow: hidden;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.6) 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+    backdrop-filter: blur(5px);
   }
 
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
+  .login-box {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-    span {
-      &:first-of-type {
-        margin-right: 16px;
+  .platform-info {
+    text-align: center;
+    margin-bottom: 25px;
+
+    .platform-logo {
+      width: 90px;
+      height: 90px;
+      margin-bottom: 15px;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+    }
+
+    .platform-name {
+      color: #fff;
+      font-size: 32px;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .platform-desc {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 16px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  .login-form {
+    width: 440px;
+    max-width: 90%;
+    padding: 35px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .welcome-text {
+    text-align: center;
+    margin-bottom: 30px;
+
+    .welcome {
+      font-size: 24px;
+      color: #2c3e50;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .sub-welcome {
+      font-size: 14px;
+      color: #7f8c8d;
+    }
+  }
+
+  .el-form-item {
+    border: 1px solid #e8e8e8;
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+    
+    &:hover {
+      border-color: #409EFF;
+      box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.1);
+    }
+
+    &:focus-within {
+      border-color: #409EFF;
+      box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.15);
+    }
+  }
+
+  .el-input {
+    width: 100%;
+    
+    input {
+      color: #2c3e50;
+      font-size: 15px;
+      padding: 12px 15px 12px 45px !important;
+      height: 52px;
+      background: transparent;
+      border: none;
+      border-radius: 12px;
+      transition: all 0.3s;
+      
+      &::placeholder {
+        color: #95a5a6;
+        font-size: 14px;
+      }
+
+      &:focus {
+        background: rgba(64, 158, 255, 0.02);
+        
+        & + .svg-container {
+          .svg-icon {
+            color: #409EFF;
+          }
+        }
       }
     }
   }
 
-  .svg-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
+  .el-button--primary {
+    height: 48px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 8px;
+    background: #409EFF;
+    border: none;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+
+    &:hover {
+      background: #66b1ff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
   }
 
-  .title-container {
-    position: relative;
+  .login-footer {
+    text-align: center;
+    
+    .role-select {
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
 
-    .title {
-      font-size: 26px;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
+      .role-item {
+        padding: 6px 12px;
+        font-size: 14px;
+        color: #666;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          color: #409EFF;
+          background: rgba(64, 158, 255, 0.1);
+        }
+
+        &.active {
+          color: #409EFF;
+          background: rgba(64, 158, 255, 0.1);
+          font-weight: 500;
+        }
+      }
+    }
+
+    .copyright {
+      font-size: 12px;
+      color: #999;
+      margin-top: 15px;
+    }
+  }
+
+  .svg-container {
+    padding: 0 15px;
+    color: #909399;
+    font-size: 18px;
+    transition: all 0.3s;
+    position: absolute;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    
+    .svg-icon {
+      transition: all 0.3s;
     }
   }
 
   .show-pwd {
     position: absolute;
-    right: 10px;
-    top: 7px;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #909399;
     font-size: 16px;
-    color: $dark_gray;
     cursor: pointer;
-    user-select: none;
+    transition: all 0.3s;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+
+    &:hover {
+      color: #409EFF;
+      background: rgba(64, 158, 255, 0.1);
+    }
   }
 
-  .thirdparty-button {
-    position: absolute;
-    right: 0;
-    bottom: 6px;
+  .el-form-item--password {
+    .el-input input {
+      padding-right: 45px !important;
+    }
   }
 
-  @media only screen and (max-width: 470px) {
-    .thirdparty-button {
-      display: none;
+  @keyframes input-focus {
+    0% {
+      background: transparent;
+    }
+    100% {
+      background: rgba(64, 158, 255, 0.02);
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .login-form {
+      padding: 25px;
+    }
+
+    .platform-info {
+      .platform-logo {
+        width: 70px;
+        height: 70px;
+      }
+
+      .platform-name {
+        font-size: 26px;
+      }
+
+      .platform-desc {
+        font-size: 14px;
+      }
+    }
+
+    .welcome-text {
+      .welcome {
+        font-size: 20px;
+      }
+    }
+
+    .login-footer {
+      .role-select {
+        gap: 10px;
+        
+        .role-item {
+          padding: 4px 8px;
+          font-size: 13px;
+        }
+      }
+    }
+
+    .el-form-item {
+      margin-bottom: 20px;
+    }
+
+    .el-input input {
+      height: 48px;
+      font-size: 14px;
+    }
+
+    .svg-container {
+      font-size: 16px;
     }
   }
 }
