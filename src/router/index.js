@@ -94,10 +94,17 @@ export const asyncRoutes = [
         hidden: true
       },
       {
-        path: 'edit/:id',
+        path: 'activities/edit/:id',
         component: () => import('@/views/student-affairs/activities/edit'),
         name: 'ActivityEdit',
-        meta: { title: '编辑活动', noCache: true },
+        meta: { title: '编辑活动', activeMenu: '/student-affairs/activities' },
+        hidden: true
+      },
+      {
+        path: 'activities/create',
+        component: () => import('@/views/student-affairs/activities/create'),
+        name: 'CreateActivity',
+        meta: { title: '新建活动', activeMenu: '/student-affairs/activities' },
         hidden: true
       }
     ]
