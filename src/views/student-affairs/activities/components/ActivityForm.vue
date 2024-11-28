@@ -184,6 +184,89 @@
             resize="none"
           />
         </el-form-item>
+
+        <div class="form-grid">
+          <el-form-item label="评委人数" prop="activityInfo.judges">
+            <el-input-number
+              v-model="formData.activityInfo.judges"
+              :min="1"
+              :max="20"
+              controls-position="right"
+              placeholder="请输入评委人数"
+            />
+          </el-form-item>
+        </div>
+
+        <el-form-item label="奖项设置" prop="activityInfo.awards">
+          <div class="awards-container">
+            <div v-for="(award, index) in formData.activityInfo.awards" :key="index" class="award-item">
+              <div class="award-content">
+                <div class="award-field">
+                  <label>奖项名称</label>
+                  <el-input v-model="award.name" placeholder="如：一等奖" size="small" />
+                </div>
+                <div class="award-field">
+                  <label>名额</label>
+                  <el-input-number 
+                    v-model="award.count" 
+                    :min="1" 
+                    size="small"
+                    controls-position="right" 
+                  />
+                </div>
+                <div class="award-field">
+                  <label>奖励</label>
+                  <el-input v-model="award.reward" placeholder="如：1000元" size="small" />
+                </div>
+              </div>
+              <el-button 
+                class="delete-btn"
+                type="text" 
+                icon="el-icon-delete"
+                @click="removeAward(index)"
+              />
+            </div>
+            <div class="add-button-wrapper">
+              <el-button type="dashed" icon="el-icon-plus" @click="addAward">添加奖项</el-button>
+            </div>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="赛程安排" prop="activityInfo.schedule">
+          <div class="schedule-container">
+            <div v-for="(schedule, index) in formData.activityInfo.schedule" :key="index" class="schedule-item">
+              <div class="schedule-content">
+                <div class="schedule-field">
+                  <label>阶段</label>
+                  <el-input v-model="schedule.stage" placeholder="如：初赛" size="small" />
+                </div>
+                <div class="schedule-field">
+                  <label>时间</label>
+                  <el-date-picker
+                    v-model="schedule.time"
+                    type="datetime"
+                    placeholder="选择日期时间"
+                    value-format="yyyy-MM-dd HH:mm"
+                    size="small"
+                  />
+                </div>
+                <div class="schedule-field">
+                  <label>地点</label>
+                  <el-input v-model="schedule.location" placeholder="比赛地点" size="small" />
+                </div>
+              </div>
+              <el-button 
+                class="delete-btn"
+                type="text" 
+                icon="el-icon-delete"
+                @click="removeSchedule(index)"
+              />
+            </div>
+            <div class="add-button-wrapper">
+              <el-button type="dashed" icon="el-icon-plus" @click="addSchedule">添加赛程</el-button>
+            </div>
+          </div>
+        </el-form-item>
       </div>
 
       <!-- 社会实践活动特有信息 -->
@@ -287,7 +370,22 @@ export default {
           practiceUnit: '',
           practiceSite: '',
           practiceType: '',
-          requirements: ''
+          requirements: '',
+          judges: 3,
+          awards: [
+            {
+              name: '一等奖',
+              count: 1,
+              reward: '1000元'
+            }
+          ],
+          schedule: [
+            {
+              stage: '初赛',
+              time: '',
+              location: ''
+            }
+          ]
         }
       },
       typeOptions: [
@@ -367,6 +465,26 @@ export default {
     },
     cancel() {
       this.$router.push('/student-affairs/activities')
+    },
+    addAward() {
+      this.formData.activityInfo.awards.push({
+        name: '',
+        count: 1,
+        reward: ''
+      })
+    },
+    removeAward(index) {
+      this.formData.activityInfo.awards.splice(index, 1)
+    },
+    addSchedule() {
+      this.formData.activityInfo.schedule.push({
+        stage: '',
+        time: '',
+        location: ''
+      })
+    },
+    removeSchedule(index) {
+      this.formData.activityInfo.schedule.splice(index, 1)
     }
   }
 }
@@ -638,5 +756,169 @@ export default {
 ::selection {
   background: rgba(64, 158, 255, 0.2);
   color: #409EFF;
+}
+
+.awards-container,
+.schedule-container {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+  counter-reset: item;
+}
+
+.award-item,
+.schedule-item {
+  position: relative;
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px 16px 16px 32px;
+  margin-bottom: 12px;
+  border: 1px solid #ebeef5;
+  transition: all 0.3s;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+
+  &:hover {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    border-color: #409EFF;
+    transform: translateY(-2px);
+  }
+
+  &::before {
+    content: counter(item);
+    counter-increment: item;
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #409EFF, #3a8ee6);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(64, 158, 255, 0.3);
+    z-index: 1;
+  }
+}
+
+.award-content,
+.schedule-content {
+  flex: 1;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.award-field,
+.schedule-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  label {
+    font-size: 12px;
+    color: #606266;
+    margin-bottom: 4px;
+  }
+
+  .el-input,
+  .el-input-number,
+  .el-date-picker {
+    width: 100%;
+  }
+}
+
+.delete-btn {
+  padding: 8px;
+  margin-top: 12px;
+  color: #f56c6c;
+  border-radius: 4px;
+  transition: all 0.3s;
+
+  &:hover {
+    background: #fff5f5;
+    color: #f56c6c;
+  }
+
+  i {
+    font-size: 16px;
+  }
+}
+
+.add-button-wrapper {
+  text-align: center;
+  margin-top: 16px;
+
+  .el-button {
+    width: 100%;
+    border: 1px dashed #409EFF;
+    color: #409EFF;
+    background: rgba(64, 158, 255, 0.1);
+    height: 40px;
+    border-radius: 8px;
+    transition: all 0.3s;
+
+    &:hover {
+      background: #409EFF;
+      color: #fff;
+      border-style: solid;
+    }
+
+    i {
+      margin-right: 8px;
+    }
+  }
+}
+
+// 响应式布局
+@media screen and (max-width: 768px) {
+  .award-content,
+  .schedule-content {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .award-field,
+  .schedule-field {
+    width: 100%;
+  }
+
+  .delete-btn {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    margin-top: 0;
+  }
+
+  .award-item,
+  .schedule-item {
+    padding-top: 40px;
+  }
+}
+
+// 日期选择器样式优化
+.el-date-editor.el-input {
+  width: 100%;
+  
+  .el-input__inner {
+    padding-left: 30px;
+  }
+}
+
+// 数字输入框样式优化
+.el-input-number {
+  width: 100%;
+  
+  .el-input__inner {
+    text-align: left;
+    padding-left: 12px;
+  }
 }
 </style> 
