@@ -8,6 +8,7 @@ const search = require('./remote-search')
 const student = require('./student')
 const teacher = require('./teacher')
 const dashboard = require('./dashboard')
+const activity = require('./activity')
 
 const mocks = [
   ...user,
@@ -16,7 +17,8 @@ const mocks = [
   ...search,
   ...student,
   ...teacher,
-  ...dashboard
+  ...dashboard,
+  ...activity
 ]
 
 // for front mock

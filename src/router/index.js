@@ -85,6 +85,20 @@ export const asyncRoutes = [
         component: () => import('@/views/student-affairs/leave/index'),
         name: 'StudentLeave',
         meta: { title: '请销假管理' }
+      },
+      {
+        path: 'activities/detail/:id',
+        component: () => import('@/views/student-affairs/activities/detail'),
+        name: 'ActivityDetail',
+        meta: { title: '活动详情', activeMenu: '/student-affairs/activities' },
+        hidden: true
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/student-affairs/activities/edit'),
+        name: 'ActivityEdit',
+        meta: { title: '编辑活动', noCache: true },
+        hidden: true
       }
     ]
   },
