@@ -16,8 +16,8 @@ export const constantRoutes = [
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
-      component: () => import('@/views/dashboard/index'),
       name: 'Dashboard',
+      component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
   }
@@ -25,254 +25,134 @@ export const constantRoutes = [
 
 export const asyncRoutes = [
   {
-    path: '/basic-info',
+    path: '/data-entry',
     component: Layout,
-    meta: { title: '基础信息管理', icon: 'el-icon-user' },
+    meta: { 
+      title: '数据管理',
+      icon: 'form',
+      roles: ['workshop'] // 车间主任可访问
+    },
     children: [
       {
-        path: 'teacher-info',
-        component: () => import('@/views/basic-info/teacher-info/index'),
-        name: 'TeacherInfo',
-        meta: { title: '教师一张表' }
+        path: 'production',
+        name: 'Production',
+        component: () => import('@/views/data-entry/production'),
+        meta: { title: '生产数据录入', roles: ['workshop'] }
       },
       {
-        path: 'teacher-info/detail/:id',
-        component: () => import('@/views/basic-info/teacher-info/detail'),
-        name: 'TeacherDetail',
-        meta: { title: '教师详情', activeMenu: '/basic-info/teacher-info' },
-        hidden: true
-      },
-      {
-        path: 'student-info',
-        component: () => import('@/views/basic-info/student-info/index'),
-        name: 'StudentInfo',
-        meta: { title: '学生一张表' }
-      },
-      {
-        path: '/basic-info/student-info/detail/:id',
-        component: () => import('@/views/basic-info/student-info/detail'),
-        name: 'StudentDetail',
-        meta: { title: '学生详情' },
-        hidden: true
+        path: 'worktime',
+        name: 'Worktime',
+        component: () => import('@/views/data-entry/worktime'),
+        meta: { title: '工时录入', roles: ['workshop'] }
       }
     ]
   },
   {
-    path: '/student-affairs',
+    path: '/transfer',
     component: Layout,
-    meta: { title: '学生服务', icon: 'el-icon-s-custom' },
     children: [
       {
-        path: 'activities',
-        component: () => import('@/views/student-affairs/activities/index'),
-        name: 'StudentActivities',
-        meta: { title: '活动管理' }
-      },
-      {
-        path: 'associations',
-        component: () => import('@/views/student-affairs/associations/index'),
-        name: 'StudentAssociations',
-        meta: { title: '社团管理' }
-      },
-      {
-        path: 'evaluation',
-        component: () => import('@/views/student-affairs/evaluation/index'),
-        name: 'StudentEvaluation',
-        meta: { title: '综合测评' }
-      },
-      {
-        path: 'leave',
-        component: () => import('@/views/student-affairs/leave/index'),
-        name: 'StudentLeave',
-        meta: { title: '请销假管理' }
-      },
-      {
-        path: 'activities/detail/:id',
-        component: () => import('@/views/student-affairs/activities/detail'),
-        name: 'ActivityDetail',
-        meta: { title: '活动详情', activeMenu: '/student-affairs/activities' },
-        hidden: true
-      },
-      {
-        path: 'activities/edit/:id',
-        component: () => import('@/views/student-affairs/activities/edit'),
-        name: 'ActivityEdit',
-        meta: { title: '编辑活动', activeMenu: '/student-affairs/activities' },
-        hidden: true
-      },
-      {
-        path: 'activities/create',
-        component: () => import('@/views/student-affairs/activities/create'),
-        name: 'CreateActivity',
-        meta: { title: '新建活动', activeMenu: '/student-affairs/activities' },
-        hidden: true
+        path: 'index',
+        name: 'Transfer',
+        component: () => import('@/views/transfer/index'),
+        meta: { 
+          title: '借调管理',
+          icon: 'peoples',
+          roles: ['workshop'] 
+        }
       }
     ]
   },
   {
-    path: '/personnel',
+    path: '/salary',
     component: Layout,
-    meta: { title: '教师考核', icon: 'el-icon-s-check' },
+    meta: {
+      title: '工资管理',
+      icon: 'money',
+      roles: ['workshop', 'leader', 'admin']
+    },
     children: [
       {
-        path: 'assessment',
-        component: () => import('@/views/personnel/assessment/index'),
-        name: 'TeacherAssessment',
-        meta: { title: '教职工考核管理' }
+        path: 'details',
+        name: 'SalaryDetails',
+        component: () => import('@/views/salary/details'),
+        meta: { title: '工资明细', roles: ['workshop', 'leader', 'admin'] }
       },
       {
-        path: 'performance',
-        component: () => import('@/views/personnel/performance/index'),
-        name: 'PerformanceAnalysis',
-        meta: { title: '绩效分析' }
+        path: 'calculation',
+        name: 'SalaryCalculation',
+        component: () => import('@/views/salary/calculation'),
+        meta: { title: '工资核算', roles: ['admin'] }
       }
     ]
   },
   {
-    path: '/party-building',
+    path: '/report',
     component: Layout,
-    meta: { title: '党建思政', icon: 'el-icon-s-flag' },
+    meta: {
+      title: '报表管理',
+      icon: 'chart',
+      roles: ['leader', 'admin']
+    },
     children: [
       {
-        path: 'organization',
-        component: () => import('@/views/party-building/organization/index'),
-        name: 'PartyOrganization',
-        meta: { title: '党组织管理' }
+        path: 'production',
+        name: 'ProductionReport',
+        component: () => import('@/views/report/production'),
+        meta: { title: '生产报表', roles: ['leader', 'admin'] }
       },
       {
-        path: 'member-development',
-        component: () => import('@/views/party-building/member-development/index'),
-        name: 'MemberDevelopment',
-        meta: { title: '党员发展' }
-      },
-      {
-        path: 'activities',
-        component: () => import('@/views/party-building/activities/index'),
-        name: 'PartyActivities',
-        meta: { title: '党员学习与活动' }
-      },
-      {
-        path: 'ideology',
-        component: () => import('@/views/party-building/ideology/index'),
-        name: 'Ideology',
-        meta: { title: '思政工作' }
+        path: 'efficiency',
+        name: 'EfficiencyReport',
+        component: () => import('@/views/report/efficiency'),
+        meta: { title: '效率报表', roles: ['leader', 'admin'] }
       }
     ]
   },
   {
-    path: '/research',
+    path: '/system',
     component: Layout,
-    meta: { title: '科研管理', icon: 'el-icon-s-management' },
+    meta: {
+      title: '系统管理',
+      icon: 'setting',
+      roles: ['admin']
+    },
     children: [
       {
-        path: 'projects',
-        component: () => import('@/views/research/projects/index'),
-        name: 'ResearchProjects',
-        meta: { title: '科研项目管理' }
+        path: 'user',
+        name: 'User',
+        component: () => import('@/views/system/user'),
+        meta: { title: '用户管理', roles: ['admin'] }
       },
       {
-        path: 'achievements',
-        component: () => import('@/views/research/achievements/index'),
-        name: 'ResearchAchievements',
-        meta: { title: '科研成果管理' }
+        path: 'workshop',
+        name: 'Workshop',
+        component: () => import('@/views/system/workshop'),
+        meta: { title: '车间管理', roles: ['admin'] }
       },
       {
-        path: 'activities',
-        component: () => import('@/views/research/activities/index'),
-        name: 'AcademicActivities',
-        meta: { title: '学术活动管理' }
+        path: 'product',
+        name: 'Product',
+        component: () => import('@/views/system/product'),
+        meta: { title: '产品管理', roles: ['admin'] }
       }
     ]
   },
-  {
-    path: '/cooperation',
-    component: Layout,
-    meta: { title: '校企合作', icon: 'el-icon-s-cooperation' },
-    children: [
-      {
-        path: 'projects',
-        component: () => import('@/views/cooperation/projects/index'),
-        name: 'CooperationProjects',
-        meta: { title: '合作项目管理' }
-      },
-      {
-        path: 'enterprises',
-        component: () => import('@/views/cooperation/enterprises/index'),
-        name: 'EnterpriseInfo',
-        meta: { title: '企业信息库' }
-      },
-      {
-        path: 'courses',
-        component: () => import('@/views/cooperation/courses/index'),
-        name: 'CooperationCourses',
-        meta: { title: '合作课程开发' }
-      }
-    ]
-  },
-  {
-    path: '/assets',
-    component: Layout,
-    meta: { title: '后勤资产管理', icon: 'el-icon-s-goods' },
-    children: [
-      {
-        path: 'register',
-        component: () => import('@/views/assets/register/index'),
-        name: 'AssetsRegister',
-        meta: { title: '资产登记' }
-      },
-      {
-        path: 'maintenance',
-        component: () => import('@/views/assets/maintenance/index'),
-        name: 'AssetsMaintenance',
-        meta: { title: '资产维护' }
-      },
-      {
-        path: 'scrap',
-        component: () => import('@/views/assets/scrap/index'),
-        name: 'AssetsScrap',
-        meta: { title: '资产报废' }
-      }
-    ]
-  },
-  {
-    path: '/union',
-    component: Layout,
-    meta: { title: '工会', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'members',
-        component: () => import('@/views/union/members/index'),
-        name: 'UnionMembers',
-        meta: { title: '会员管理' }
-      },
-      {
-        path: 'activities',
-        component: () => import('@/views/union/activities/index'),
-        name: 'UnionActivities',
-        meta: { title: '活动组织' }
-      },
-      {
-        path: 'welfare',
-        component: () => import('@/views/union/welfare/index'),
-        name: 'UnionWelfare',
-        meta: { title: '福利管理' }
-      }
-    ]
-  }
+  
+  // 404页面必须放在最后
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
 
 const router = createRouter()
 
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
+  router.matcher = newRouter.matcher
 }
 
 export default router

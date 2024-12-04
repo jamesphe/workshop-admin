@@ -1,99 +1,59 @@
 const Mock = require('mockjs')
 
-const statisticsData = [
-  {
-    label: '在校教师',
-    value: Mock.mock('@integer(2000, 3000)'),
-    icon: 'el-icon-user',
-    color: '#409EFF',
-    growth: Mock.mock('@float(-5, 8, 1, 1)')
-  },
-  {
-    label: '在校学生',
-    value: Mock.mock('@integer(30000, 35000)'),
-    icon: 'el-icon-reading',
-    color: '#67C23A',
-    growth: Mock.mock('@float(-5, 8, 1, 1)')
-  },
-  {
-    label: '待办事项',
-    value: Mock.mock('@integer(20, 100)'),
-    icon: 'el-icon-document',
-    color: '#E6A23C',
-    growth: Mock.mock('@float(-5, 8, 1, 1)')
-  },
-  {
-    label: '系统消息',
-    value: Mock.mock('@integer(0, 50)'),
-    icon: 'el-icon-bell',
-    color: '#F56C6C',
-    growth: Mock.mock('@float(-5, 8, 1, 1)')
-  }
-]
+const productionData = Mock.mock({
+  'dates|7': ['@date("MM-dd")'],
+  'production|7': ['@integer(1000, 3000)'],
+  'efficiency|7': ['@float(60, 95, 1, 1)'],
+  'cost|7': ['@float(1000, 2000, 1, 1)']
+})
 
 const todoList = [
   {
-    content: '教师资格证年度核验',
-    time: Mock.mock('@date("yyyy-MM-dd")'),
-    type: 'warning'
+    type: 'warning',
+    category: '借调申请',
+    content: '原酿车间申请借调张三等2人',
+    time: '2024-01-15 09:30:00'
   },
   {
-    content: '教学质量评估材料提交',
-    time: Mock.mock('@date("yyyy-MM-dd")'),
-    type: 'success'
+    type: 'primary',
+    category: '数据录入',
+    content: '灌装车间1月14日产量数据待录入',
+    time: '2024-01-15 08:00:00'
   },
   {
-    content: '学期教学计划审核',
-    time: Mock.mock('@date("yyyy-MM-dd")'),
-    type: 'primary'
+    type: 'success',
+    category: '工资核算',
+    content: '12月份工资核算已完成，请查看',
+    time: '2024-01-14 17:30:00'
   },
   {
-    content: '教师继续教育课程学习',
-    time: Mock.mock('@date("yyyy-MM-dd")'),
-    type: 'info'
-  },
-  {
-    content: '实验室安全检查',
-    time: Mock.mock('@date("yyyy-MM-dd")'),
-    type: 'warning'
+    type: 'info',
+    category: '系统通知',
+    content: '系统将于今晚22:00进行维护升级',
+    time: '2024-01-14 16:00:00'
   }
 ]
 
-const chartData = {
-  xAxis: ['1月', '2月', '3月', '4月', '5月', '6月'],
-  series: [
-    {
-      name: '教务办理',
-      data: Mock.mock({
-        'array|6': ['@integer(100, 1000)']
-      }).array
-    },
-    {
-      name: '学生事务',
-      data: Mock.mock({
-        'array|6': ['@integer(100, 1000)']
-      }).array
-    },
-    {
-      name: '行政办公',
-      data: Mock.mock({
-        'array|6': ['@integer(100, 1000)']
-      }).array
-    }
-  ]
-}
-
 module.exports = [
+  // 获取仪表盘数据
   {
-    url: '/vue-element-admin/dashboard/statistics',
+    url: '/vue-element-admin/dashboard/data',
     type: 'get',
     response: () => {
       return {
         code: 20000,
-        data: statisticsData
+        data: {
+          todayProduction: Mock.mock('@integer(2000, 3000)'),
+          onDutyCount: Mock.mock('@integer(40, 50)'),
+          transferCount: Mock.mock('@integer(3, 8)'),
+          totalSalary: Mock.mock('@integer(20000, 30000)'),
+          chartData: productionData
+        }
       }
     }
   },
+
+  // 获取待办事项
   {
     url: '/vue-element-admin/dashboard/todo',
     type: 'get',
@@ -101,16 +61,6 @@ module.exports = [
       return {
         code: 20000,
         data: todoList
-      }
-    }
-  },
-  {
-    url: '/vue-element-admin/dashboard/chart',
-    type: 'get',
-    response: () => {
-      return {
-        code: 20000,
-        data: chartData
       }
     }
   }

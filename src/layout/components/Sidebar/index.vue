@@ -31,11 +31,19 @@ import variables from '@/styles/variables.scss'
 
 export default {
   components: { SidebarItem, Logo },
+  data() {
+    return {
+      menuLoaded: false
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
-      'routes'
+      'permission_routes'
     ]),
+    routes() {
+      return this.permission_routes
+    },
     activeMenu() {
       const route = this.$route
       const { meta, path } = route
@@ -52,6 +60,18 @@ export default {
     },
     isCollapse() {
       return !this.sidebar.opened
+    }
+  },
+  watch: {
+    $route: {
+      handler(route) {
+        if (!this.menuLoaded) {
+          const roles = this.$store.getters.roles || []
+          this.$store.dispatch('permission/generateRoutes', roles)
+          this.menuLoaded = true
+        }
+      },
+      immediate: true
     }
   }
 }

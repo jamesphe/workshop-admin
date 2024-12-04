@@ -3,14 +3,14 @@
     <div class="login-box">
       <div class="platform-info">
         <img src="@/assets/logo.svg" class="platform-logo" alt="logo">
-        <h2 class="platform-name">职校综合服务平台</h2>
-        <p class="platform-desc">数字化校园管理系统</p>
+        <h2 class="platform-name">车间管理系统</h2>
+        <p class="platform-desc">山西水塔醋业生产管理平台</p>
       </div>
       
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on">
         <div class="welcome-text">
           <p class="welcome">欢迎登录</p>
-          <p class="sub-welcome">请使用您的账号密码登录系统</p>
+          <p class="sub-welcome">请使用您的工号和密码登录系统</p>
         </div>
 
         <el-form-item prop="username">
@@ -20,7 +20,7 @@
           <el-input
             ref="username"
             v-model="loginForm.username"
-            placeholder="工号/学号"
+            placeholder="工号"
             name="username"
             type="text"
             tabindex="1"
@@ -58,11 +58,11 @@
 
         <div class="login-footer">
           <div class="role-select">
-            <span class="role-item" :class="{ active: currentRole === 'teacher' }" @click="switchRole('teacher')">教师端</span>
-            <span class="role-item" :class="{ active: currentRole === 'student' }" @click="switchRole('student')">学生端</span>
-            <span class="role-item" :class="{ active: currentRole === 'admin' }" @click="switchRole('admin')">管理端</span>
+            <span class="role-item" :class="{ active: currentRole === 'workshop' }" @click="switchRole('workshop')">车间主任</span>
+            <span class="role-item" :class="{ active: currentRole === 'leader' }" @click="switchRole('leader')">领导</span>
+            <span class="role-item" :class="{ active: currentRole === 'admin' }" @click="switchRole('admin')">管理员</span>
           </div>
-          <div class="copyright">© 2024 职校综合服务平台 版权所有</div>
+          <div class="copyright">© 2024 山西水塔醋业 版权所有</div>
         </div>
       </el-form>
     </div>
@@ -70,32 +70,52 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
-
 export default {
   name: 'Login',
   components: {
     // 删除未使用的 SocialSign 组件
   },
   data() {
+    // 自定义用户名验证规则
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
-      } else {
-        callback()
+      // 检查是否为空
+      if (!value) {
+        callback(new Error('请输入工号'))
+        return
       }
+      
+      // 验证工号格式
+      const usernamePattern = {
+        workshop: /^WS\d{4}$/, // WS0001-WS9999
+        leader: /^LD\d{4}$/, // LD0001-LD9999
+        admin: /^AD\d{4}$/ // AD0001-AD9999
+      }
+      
+      const pattern = usernamePattern[this.currentRole]
+      if (!pattern.test(value)) {
+        callback(new Error('工号格式不正确'))
+        return
+      }
+      
+      callback()
     }
+
     const validatePassword = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请输入密码'))
+        return
+      }
       if (value.length < 6) {
         callback(new Error('密码不能少于6位'))
-      } else {
-        callback()
+        return
       }
+      callback()
     }
+
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -107,7 +127,21 @@ export default {
       showDialog: false,
       redirect: undefined,
       otherQuery: {},
-      currentRole: 'teacher'
+      currentRole: 'workshop',
+      mockAccounts: {
+        workshop: {
+          username: 'WS0001', // 车间主任工号
+          password: 'ws123456'
+        },
+        leader: {
+          username: 'LD0001', // 领导工号
+          password: 'ld123456'
+        },
+        admin: {
+          username: 'AD0001', // 管理员工号
+          password: 'ad123456'
+        }
+      }
     }
   },
   watch: {
@@ -124,6 +158,8 @@ export default {
   },
   created() {
     // window.addEventListener('storage', this.afterQRScan)
+    this.loginForm.username = this.mockAccounts[this.currentRole].username
+    this.loginForm.password = this.mockAccounts[this.currentRole].password
   },
   mounted() {
     if (this.loginForm.username === '') {
@@ -154,16 +190,18 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
+          this.$store.dispatch('user/login', {
+            username: this.loginForm.username,
+            password: this.loginForm.password,
+            role: this.currentRole
+          }).then(() => {
+            this.$router.push({ path: this.redirect || '/' })
+            this.loading = false
+          }).catch(error => {
+            this.$message.error(error || '登录失败')
+            this.loading = false
+          })
         } else {
-          console.log('error submit!!')
           return false
         }
       })
@@ -178,6 +216,8 @@ export default {
     },
     switchRole(role) {
       this.currentRole = role
+      this.loginForm.username = this.mockAccounts[role].username
+      this.loginForm.password = this.mockAccounts[role].password
     }
     // afterQRScan() {
     //   if (e.key === 'x-admin-oauth-code') {
@@ -209,7 +249,7 @@ $light_gray:#eee;
 .login-container {
   min-height: 100vh;
   width: 100%;
-  background: url('~@/assets/school-bg.jpg') center center / cover no-repeat fixed;
+  background: url('~@/assets/factory-bg.png') center center / cover no-repeat fixed;
   position: relative;
   overflow: hidden;
   display: flex;

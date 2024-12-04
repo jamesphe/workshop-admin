@@ -4,7 +4,11 @@ export function login(data) {
   return request({
     url: '/vue-element-admin/user/login',
     method: 'post',
-    data
+    data: {
+      username: data.username,
+      password: data.password,
+      role: data.role
+    }
   })
 }
 

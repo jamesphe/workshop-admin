@@ -1,10 +1,13 @@
 import router from './router'
 import store from './store'
+import { Message } from 'element-ui'
 import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
 
-// 权限白名单
-const whiteList = ['/login']
+NProgress.configure({ showSpinner: false })
+
+const whiteList = ['/login'] 
 
 router.beforeEach(async(to, from, next) => {
   NProgress.start()
@@ -22,11 +25,15 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           const { roles } = await store.dispatch('user/getInfo')
+          
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
+          
           router.addRoutes(accessRoutes)
+
           next({ ...to, replace: true })
         } catch (error) {
           await store.dispatch('user/resetToken')
+          Message.error(error || '出现错误，请重新登录')
           next(`/login?redirect=${to.path}`)
           NProgress.done()
         }
